@@ -1,4 +1,2 @@
-/**
- * Deterministic random generation will live in this module.
- */
-export {};
+export { RandomGenerator } from "./random-generator.js";
+export type { WeightedItem } from "./types.js";
