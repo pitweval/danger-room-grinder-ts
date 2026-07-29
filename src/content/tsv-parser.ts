@@ -4,6 +4,7 @@ import type { ParsedTsv, ParseTsvOptions, TsvRow } from "./types.js";
 const DEFAULT_SOURCE = "TSV input";
 const BLANK_LINE = /^[\t ]*$/;
 const COMMENT_LINE = /^[\t ]*#/;
+const PARSED_SOURCES = new WeakMap<ParsedTsv, string>();
 
 /**
  * Parses gameplay-neutral, header-based TSV text.
@@ -62,10 +63,21 @@ export function parseTsv(text: string, options: ParseTsvOptions = {}): ParsedTsv
     throw new TsvParseError("Missing header row.", source);
   }
 
-  return Object.freeze({
+  const parsed = Object.freeze({
     headers,
     rows: Object.freeze(rows),
   });
+  PARSED_SOURCES.set(parsed, source);
+  return parsed;
+}
+
+/**
+ * Returns parser diagnostic context for downstream schema loaders.
+ *
+ * @internal
+ */
+export function getTsvSource(parsedTsv: ParsedTsv): string | undefined {
+  return PARSED_SOURCES.get(parsedTsv);
 }
 
 function parseHeaders(
