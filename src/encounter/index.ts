@@ -1,4 +1,10 @@
 export { calculateBossEncounterXpBudget, calculateEncounterXpBudget } from "./budget.js";
+export {
+  composeEncounter,
+  EncounterCompositionError,
+  getEligibleEncounterFormations,
+  selectEncounterFormation,
+} from "./composition/index.js";
 export { EncounterValidationError } from "./errors.js";
 export {
   EncounterFamilySelectionError,
@@ -24,6 +30,16 @@ export type {
   FamilySelectionOptions,
   FamilySelectionResult,
 } from "./families/index.js";
+export type {
+  ComposedEncounter,
+  EncounterCompositionErrorCode,
+  EncounterCompositionOptions,
+  EncounterFormation,
+  EncounterFormationRoleSlot,
+  EncounterMonsterEntry,
+  FormationSelectionOptions,
+  FormationSelectionResult,
+} from "./composition/index.js";
 export type {
   EncounterMonsterSelectionErrorCode,
   MonsterSelectionOptions,
