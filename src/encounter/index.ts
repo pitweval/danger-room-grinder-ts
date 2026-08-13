@@ -6,6 +6,11 @@ export {
   selectEncounterFamily,
 } from "./families/index.js";
 export { createParty } from "./party.js";
+export {
+  EncounterMonsterSelectionError,
+  getEligibleEncounterMonsters,
+  selectEncounterMonster,
+} from "./monsters/index.js";
 export { rollEncounterThreat } from "./threat.js";
 export type {
   EncounterDifficulty,
@@ -19,3 +24,8 @@ export type {
   FamilySelectionOptions,
   FamilySelectionResult,
 } from "./families/index.js";
+export type {
+  EncounterMonsterSelectionErrorCode,
+  MonsterSelectionOptions,
+  MonsterSelectionResult,
+} from "./monsters/index.js";
