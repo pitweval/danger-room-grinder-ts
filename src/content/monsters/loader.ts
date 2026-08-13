@@ -24,6 +24,13 @@ import {
 
 const DEFAULT_SOURCE = "monster catalog";
 
+interface MonsterCatalogMetadata {
+  readonly source: string;
+  readonly lines: ReadonlyMap<MonsterDefinition, number>;
+}
+
+const CATALOG_METADATA = new WeakMap<MonsterCatalog, MonsterCatalogMetadata>();
+
 /**
  * Validates preferred 16-column or legacy 10-column monster TSV data.
  *
@@ -55,6 +62,7 @@ export function loadMonsterCatalog(
   const monsters: MonsterDefinition[] = [];
   const idLines = new Map<string, number>();
   const nameLines = new Map<string, number>();
+  const definitionLines = new Map<MonsterDefinition, number>();
   let previousId: string | undefined;
 
   for (const row of parsedTsv.rows) {
@@ -91,10 +99,20 @@ export function loadMonsterCatalog(
     idLines.set(monster.id, row.lineNumber);
     nameLines.set(normalizedName, row.lineNumber);
     previousId = monster.id;
+    definitionLines.set(monster, row.lineNumber);
     monsters.push(monster);
   }
 
-  return Object.freeze({ monsters: Object.freeze(monsters) });
+  const catalog = Object.freeze({ monsters: Object.freeze(monsters) });
+  CATALOG_METADATA.set(catalog, { source, lines: definitionLines });
+  return catalog;
+}
+
+/** @internal */
+export function getMonsterCatalogMetadata(
+  catalog: MonsterCatalog,
+): MonsterCatalogMetadata | undefined {
+  return CATALOG_METADATA.get(catalog);
 }
 
 function parseMonster(row: TsvRow, schema: MonsterSchema, source: string): MonsterDefinition {
