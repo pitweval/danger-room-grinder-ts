@@ -21,6 +21,8 @@ export interface OrdinaryEncounterGenerationOptions {
   readonly familyWeights?: EncounterFamilyWeights;
   readonly requestedFamily?: string;
   readonly requestedFormation?: string;
+  /** Uses the room's resolved difficulty while retaining the raw threat roll. */
+  readonly requestedDifficulty?: RolledEncounterDifficulty;
 }
 
 /** Raw selection rolls retained for rendering and diagnostics. */

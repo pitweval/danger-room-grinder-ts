@@ -38,3 +38,5 @@ export type {
   EncounterBehaviorCatalog,
   LoadEncounterBehaviorCatalogInput,
 } from "./behaviors/index.js";
+export { OrdinaryRoomCatalogError, loadOrdinaryRoomCatalog } from "./rooms/index.js";
+export type * from "./rooms/index.js";

@@ -257,6 +257,25 @@ describe("generateOrdinaryEncounter", () => {
     expect(result.entries).toEqual([{ monster: seahorse, count: 12 }]);
     expect(result.xpSpent).toBe(0);
   });
+
+  it("uses a room-resolved difficulty without rerolling or changing the raw threat", () => {
+    const goblinoids = family("goblinoids");
+    const goblin = monster("goblin", { xp: 50, roles: ["minion"], families: ["goblinoids"] });
+    const rng = recordingRng(1, 1, 1, 1, 1);
+    const result = generateOrdinaryEncounter({
+      party: createParty(6, 1),
+      monsterCatalog: monsterCatalog(goblin),
+      familyCatalog: familyCatalog(goblinoids),
+      behaviorCatalog: TEST_BEHAVIOR_CATALOG,
+      requestedDifficulty: "high",
+      rng,
+    });
+
+    expect(result.threat).toEqual({ roll: 1, difficulty: "low" });
+    expect(result.difficulty).toBe("high");
+    expect(result.xpBudget).toBe(600);
+    expect(rng.integer).toHaveBeenCalledTimes(5);
+  });
 });
 
 describe("generateOrdinaryEncounter family fallback", () => {

@@ -20,6 +20,7 @@ export function generateOrdinaryEncounter(
   // Bash validates the complete request before consuming encounter rolls.
   assertValidParty(options.party);
   const threat = rollEncounterThreat(options.rng);
+  const difficulty = options.requestedDifficulty ?? threat.difficulty;
 
   let familyRoll: number | undefined;
   const familyRng = {
@@ -48,7 +49,7 @@ export function generateOrdinaryEncounter(
   const behaviorRolls = rollEncounterBehaviorState(options.rng);
   // Selection precedes budgeting in the active Bash call path. Budgeting is
   // still performed exactly once and remains fixed across every family retry.
-  const xpBudget = calculateEncounterXpBudget(options.party, threat.difficulty);
+  const xpBudget = calculateEncounterXpBudget(options.party, difficulty);
 
   const familyAttempts: string[] = [];
   const failedFamilyAttempts: string[] = [];
@@ -77,6 +78,7 @@ export function generateOrdinaryEncounter(
       return freezeResult(
         options,
         threat,
+        difficulty,
         xpBudget,
         family,
         composed,
@@ -124,6 +126,7 @@ export function generateOrdinaryEncounter(
 function freezeResult(
   options: OrdinaryEncounterGenerationOptions,
   threat: ReturnType<typeof rollEncounterThreat>,
+  difficulty: OrdinaryEncounterResult["difficulty"],
   xpBudget: number,
   family: FamilyDefinition,
   composed: ReturnType<typeof composeEncounter>,
@@ -137,7 +140,7 @@ function freezeResult(
     party: Object.freeze({ ...options.party }),
     environment: options.environment ?? "dungeon",
     threat,
-    difficulty: threat.difficulty,
+    difficulty,
     xpBudget,
     family,
     formation: composed.formation,
