@@ -36,12 +36,13 @@ export function generateOrdinaryEncounter(
     ...(options.familyWeights === undefined ? {} : { familyWeights: options.familyWeights }),
     ...(options.requestedFamily === undefined ? {} : { requestedFamily: options.requestedFamily }),
   }).family;
-  const formation = selectEncounterFormation({
+  const formationSelection = selectEncounterFormation({
     rng: options.rng,
     ...(options.requestedFormation === undefined
       ? {}
       : { requestedFormation: options.requestedFormation }),
-  }).formation;
+  });
+  const formation = formationSelection.formation;
   // Bash draws both values with the other encounter details before roster
   // composition, then resolves behavior only after the final family succeeds.
   const behaviorRolls = rollEncounterBehaviorState(options.rng);
@@ -81,6 +82,8 @@ export function generateOrdinaryEncounter(
         composed,
         familyAttempts,
         failedFamilyAttempts,
+        familyRoll,
+        formationSelection.roll,
         generateEncounterBehavior({
           catalog: options.behaviorCatalog,
           rolls: behaviorRolls,
@@ -126,6 +129,8 @@ function freezeResult(
   composed: ReturnType<typeof composeEncounter>,
   familyAttempts: readonly string[],
   failedFamilyAttempts: readonly string[],
+  familyRoll: number | undefined,
+  formationRoll: number | undefined,
   behaviorState: ReturnType<typeof generateEncounterBehavior>,
 ): OrdinaryEncounterResult {
   return Object.freeze({
@@ -144,6 +149,7 @@ function freezeResult(
     familyAttempts: Object.freeze([...familyAttempts]),
     failedFamilyAttempts: Object.freeze([...failedFamilyAttempts]),
     behaviorState,
+    selectionRolls: Object.freeze({ family: familyRoll, formation: formationRoll }),
   });
 }
 

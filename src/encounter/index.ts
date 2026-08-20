@@ -30,6 +30,7 @@ export {
   selectEncounterMonster,
 } from "./monsters/index.js";
 export { rollEncounterThreat } from "./threat.js";
+export { renderOrdinaryEncounter } from "./rendering/index.js";
 export type {
   EncounterDifficulty,
   Party,
@@ -66,4 +67,5 @@ export type {
   OrdinaryEncounterGenerationErrorCode,
   OrdinaryEncounterGenerationOptions,
   OrdinaryEncounterResult,
+  EncounterSelectionRolls,
 } from "./generation/index.js";

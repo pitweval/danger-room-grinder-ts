@@ -68,6 +68,7 @@ describe("generateOrdinaryEncounter", () => {
     });
     expect(result.familyAttempts).toEqual(["goblinoids"]);
     expect(result.failedFamilyAttempts).toEqual([]);
+    expect(result.selectionRolls).toEqual({ family: 1, formation: 1 });
     expect(result.behaviorState).toMatchObject({
       behavior: { key: "humanoid_low" },
       disposition: { description: "Neutral" },
@@ -129,6 +130,7 @@ describe("generateOrdinaryEncounter", () => {
     expect(Object.isFrozen(result.entries)).toBe(true);
     expect(Object.isFrozen(result.familyAttempts)).toBe(true);
     expect(Object.isFrozen(result.failedFamilyAttempts)).toBe(true);
+    expect(Object.isFrozen(result.selectionRolls)).toBe(true);
     expect(Object.isFrozen(result.formationExecution)).toBe(true);
     expect(Object.isFrozen(result.formationExecution.attempts)).toBe(true);
     expect(monsters).toEqual(monsterSnapshot);

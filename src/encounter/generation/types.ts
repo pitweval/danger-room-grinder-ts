@@ -23,6 +23,12 @@ export interface OrdinaryEncounterGenerationOptions {
   readonly requestedFormation?: string;
 }
 
+/** Raw selection rolls retained for rendering and diagnostics. */
+export interface EncounterSelectionRolls {
+  readonly family: number | undefined;
+  readonly formation: number | undefined;
+}
+
 export interface OrdinaryEncounterResult {
   readonly party: Party;
   readonly environment: string;
@@ -39,6 +45,7 @@ export interface OrdinaryEncounterResult {
   readonly familyAttempts: readonly string[];
   readonly failedFamilyAttempts: readonly string[];
   readonly behaviorState: EncounterBehaviorState;
+  readonly selectionRolls: EncounterSelectionRolls;
 }
 
 export type OrdinaryEncounterGenerationErrorCode =
