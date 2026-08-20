@@ -7,7 +7,11 @@ import type {
   EncounterCompositionOptions,
   EncounterFormationRoleSlot,
   EncounterMonsterEntry,
+  FormationAttemptDiagnostic,
+  FormationAttemptOutcome,
+  FormationAttemptPhase,
 } from "./types.js";
+import { getEligibleEncounterMonsters } from "../monsters/eligibility.js";
 
 /** Composes one ordinary multi-monster encounter with active Bash parity. */
 export function composeEncounter(options: EncounterCompositionOptions): ComposedEncounter {
@@ -17,10 +21,31 @@ export function composeEncounter(options: EncounterCompositionOptions): Composed
   let xpRemaining = options.xpBudget;
   let creatureCount = 0;
   let leaderSelected = false;
+  const attempts: FormationAttemptDiagnostic[] = [];
 
-  const attemptSlot = (roleSlot: EncounterFormationRoleSlot): boolean => {
-    if (creatureCount >= options.formation.maxCreatures) return false;
-    if (leaderSelected && roleSlot.length === 1 && roleSlot[0] === "leader") return false;
+  const attemptSlot = (
+    roleSlot: EncounterFormationRoleSlot,
+    roleSlotIndex: number,
+    phase: FormationAttemptPhase,
+  ): boolean => {
+    const budgetBefore = xpRemaining;
+    const creatureCountBefore = creatureCount;
+    if (leaderSelected && roleSlot.length === 1 && roleSlot[0] === "leader") {
+      attempts.push(
+        freezeAttempt({
+          phase,
+          roleSlotIndex,
+          requestedRoles: roleSlot,
+          budgetBefore,
+          budgetAfter: xpRemaining,
+          creatureCountBefore,
+          creatureCountAfter: creatureCount,
+          outcome: "leader-already-selected",
+          xpSpent: 0,
+        }),
+      );
+      return false;
+    }
 
     const catalog = leaderSelected
       ? withoutLeaderMonsters(options.monsterCatalog)
@@ -40,12 +65,39 @@ export function composeEncounter(options: EncounterCompositionOptions): Composed
       xpRemaining -= monster.xp;
       creatureCount += 1;
       if (monster.roles.includes("leader")) leaderSelected = true;
+      attempts.push(
+        freezeAttempt({
+          phase,
+          roleSlotIndex,
+          requestedRoles: roleSlot,
+          budgetBefore,
+          budgetAfter: xpRemaining,
+          creatureCountBefore,
+          creatureCountAfter: creatureCount,
+          outcome: "selected",
+          selectedMonsterId: monster.id,
+          xpSpent: monster.xp,
+        }),
+      );
       return true;
     } catch (error) {
       if (
         error instanceof EncounterMonsterSelectionError &&
         error.code === "NO_ELIGIBLE_MONSTERS"
       ) {
+        attempts.push(
+          freezeAttempt({
+            phase,
+            roleSlotIndex,
+            requestedRoles: roleSlot,
+            budgetBefore,
+            budgetAfter: xpRemaining,
+            creatureCountBefore,
+            creatureCountAfter: creatureCount,
+            outcome: classifyFailedAttempt(options, catalog, roleSlot, xpRemaining),
+            xpSpent: 0,
+          }),
+        );
         return false;
       }
       throw error;
@@ -53,9 +105,9 @@ export function composeEncounter(options: EncounterCompositionOptions): Composed
   };
 
   // Bash first attempts each requested role exactly once.
-  for (const roleSlot of options.formation.roleSlots) {
+  for (const [roleSlotIndex, roleSlot] of options.formation.roleSlots.entries()) {
     if (creatureCount >= options.formation.maxCreatures) break;
-    attemptSlot(roleSlot);
+    attemptSlot(roleSlot, roleSlotIndex, "initial-pass");
   }
 
   // Then it cycles the same ordered roles until capped or a full cycle stalls.
@@ -66,7 +118,7 @@ export function composeEncounter(options: EncounterCompositionOptions): Composed
     stalledSlots < options.formation.roleSlots.length
   ) {
     const roleSlot = options.formation.roleSlots[slotIndex] as EncounterFormationRoleSlot;
-    if (attemptSlot(roleSlot)) stalledSlots = 0;
+    if (attemptSlot(roleSlot, slotIndex, "cyclic-fill")) stalledSlots = 0;
     else stalledSlots += 1;
     slotIndex = (slotIndex + 1) % options.formation.roleSlots.length;
   }
@@ -93,7 +145,35 @@ export function composeEncounter(options: EncounterCompositionOptions): Composed
     xpSpent: options.xpBudget - xpRemaining,
     xpRemaining,
     creatureCount,
+    formationExecution: Object.freeze({
+      attempts: Object.freeze(attempts),
+      termination:
+        creatureCount >= options.formation.maxCreatures ? "creature-cap" : "stalled-role-cycle",
+      maxCreatures: options.formation.maxCreatures,
+    }),
   });
+}
+
+function classifyFailedAttempt(
+  options: EncounterCompositionOptions,
+  catalog: MonsterCatalog,
+  roleSlot: EncounterFormationRoleSlot,
+  budget: number,
+): FormationAttemptOutcome {
+  const candidatesWithoutBudgetLimit = getEligibleEncounterMonsters({
+    monsterCatalog: catalog,
+    family: options.family,
+    budget: Number.MAX_SAFE_INTEGER,
+    requiredRoles: roleSlot,
+    ...(options.environment === undefined ? {} : { environment: options.environment }),
+  });
+  return candidatesWithoutBudgetLimit.some((monster) => monster.xp > budget)
+    ? "insufficient-budget"
+    : "no-candidate";
+}
+
+function freezeAttempt(attempt: FormationAttemptDiagnostic): FormationAttemptDiagnostic {
+  return Object.freeze(attempt);
 }
 
 function withoutLeaderMonsters(catalog: MonsterCatalog): MonsterCatalog {

@@ -28,3 +28,13 @@ export type {
   MonsterRole,
 } from "./monsters/index.js";
 export type { ParsedTsv, ParseTsvOptions, TsvRow } from "./types.js";
+export { EncounterBehaviorCatalogError, loadEncounterBehaviorCatalog } from "./behaviors/index.js";
+export type {
+  BehaviorDefinition,
+  BehaviorRequirement,
+  BehaviorRequirementKind,
+  BehaviorSelectorKind,
+  DispositionDefinition,
+  EncounterBehaviorCatalog,
+  LoadEncounterBehaviorCatalogInput,
+} from "./behaviors/index.js";

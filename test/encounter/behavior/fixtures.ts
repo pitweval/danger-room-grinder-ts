@@ -1,0 +1,87 @@
+import type { EncounterBehaviorCatalog } from "../../../src/content/index.js";
+
+export const TEST_BEHAVIOR_CATALOG: EncounterBehaviorCatalog = Object.freeze({
+  behaviors: Object.freeze([
+    Object.freeze({
+      selectorKind: "type",
+      selector: "Humanoid",
+      rollMinimum: 1,
+      rollMaximum: 10,
+      key: "humanoid_low",
+      title: "Working",
+      description: "They tend to their objective.",
+      requirements: Object.freeze([]),
+      preferredEnvironments: Object.freeze(["dungeon"]),
+      alertnessModifier: 0,
+    }),
+    Object.freeze({
+      selectorKind: "type",
+      selector: "Humanoid",
+      rollMinimum: 11,
+      rollMaximum: 20,
+      key: "humanoid_high",
+      title: "Keeping watch",
+      description: "They watch the approaches.",
+      requirements: Object.freeze([]),
+      preferredEnvironments: Object.freeze([]),
+      alertnessModifier: 1,
+    }),
+    Object.freeze({
+      selectorKind: "tag",
+      selector: "movement:fly",
+      rollMinimum: 1,
+      rollMaximum: 10,
+      key: "flying_low",
+      title: "Circling",
+      description: "They circle overhead.",
+      requirements: Object.freeze([]),
+      preferredEnvironments: Object.freeze([]),
+      alertnessModifier: 1,
+    }),
+    Object.freeze({
+      selectorKind: "tag",
+      selector: "movement:fly",
+      rollMinimum: 11,
+      rollMaximum: 20,
+      key: "flying_high",
+      title: "Perching",
+      description: "They watch from above.",
+      requirements: Object.freeze([]),
+      preferredEnvironments: Object.freeze(["dungeon"]),
+      alertnessModifier: 2,
+    }),
+    ...[
+      [1, 5, "fallback_one"],
+      [6, 10, "fallback_two"],
+      [11, 15, "fallback_three"],
+      [16, 20, "fallback_four"],
+    ].map(([minimum, maximum, key]) =>
+      Object.freeze({
+        selectorKind: "fallback" as const,
+        selector: "*",
+        rollMinimum: minimum as number,
+        rollMaximum: maximum as number,
+        key: key as string,
+        title: key as string,
+        description: `${String(key)} description.`,
+        requirements: Object.freeze([]),
+        preferredEnvironments: Object.freeze([]),
+        alertnessModifier: undefined,
+      }),
+    ),
+  ]),
+  dispositions: Object.freeze(
+    [
+      [1, 5, "Neutral"],
+      [6, 10, "Aggressive"],
+      [11, 15, "Angry"],
+      [16, 20, "Hateful"],
+    ].map(([minimum, maximum, description]) =>
+      Object.freeze({
+        rollMinimum: minimum as number,
+        rollMaximum: maximum as number,
+        description: description as string,
+      }),
+    ),
+  ),
+});

@@ -1,5 +1,16 @@
 export { calculateBossEncounterXpBudget, calculateEncounterXpBudget } from "./budget.js";
 export {
+  EncounterBehaviorError,
+  generateEncounterBehavior,
+  rollEncounterBehaviorState,
+} from "./behavior/index.js";
+export type {
+  EncounterBehaviorErrorCode,
+  EncounterBehaviorRolls,
+  EncounterBehaviorState,
+  GenerateEncounterBehaviorOptions,
+} from "./behavior/index.js";
+export {
   composeEncounter,
   EncounterCompositionError,
   getEligibleEncounterFormations,
@@ -12,6 +23,7 @@ export {
   selectEncounterFamily,
 } from "./families/index.js";
 export { createParty } from "./party.js";
+export { generateOrdinaryEncounter, OrdinaryEncounterGenerationError } from "./generation/index.js";
 export {
   EncounterMonsterSelectionError,
   getEligibleEncounterMonsters,
@@ -37,6 +49,11 @@ export type {
   EncounterFormation,
   EncounterFormationRoleSlot,
   EncounterMonsterEntry,
+  FormationAttemptDiagnostic,
+  FormationAttemptOutcome,
+  FormationAttemptPhase,
+  FormationExecutionDiagnostic,
+  FormationExecutionTermination,
   FormationSelectionOptions,
   FormationSelectionResult,
 } from "./composition/index.js";
@@ -45,3 +62,8 @@ export type {
   MonsterSelectionOptions,
   MonsterSelectionResult,
 } from "./monsters/index.js";
+export type {
+  OrdinaryEncounterGenerationErrorCode,
+  OrdinaryEncounterGenerationOptions,
+  OrdinaryEncounterResult,
+} from "./generation/index.js";

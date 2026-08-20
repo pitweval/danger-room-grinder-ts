@@ -9,6 +9,11 @@ export type {
   EncounterFormation,
   EncounterFormationRoleSlot,
   EncounterMonsterEntry,
+  FormationAttemptDiagnostic,
+  FormationAttemptOutcome,
+  FormationAttemptPhase,
+  FormationExecutionDiagnostic,
+  FormationExecutionTermination,
   FormationSelectionOptions,
   FormationSelectionResult,
 } from "./types.js";
