@@ -223,6 +223,7 @@ export function generateOrdinaryRoom(options: GenerateOrdinaryRoomOptions): Ordi
   return Object.freeze({
     roomNumber: options.roomNumber,
     title: `Dungeon Room ${options.roomNumber}`,
+    levelUp: options.levelUp,
     depthBand,
     difficulty,
     neighborhood: Object.freeze({ id: neighborhood.id, name: neighborhood.name }),

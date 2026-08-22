@@ -22,6 +22,7 @@ import type {
   RecurringVisitorGenerationResult,
   RecurringVisitorHistory,
 } from "./visitors/index.js";
+import type { LevelUpTransition } from "../campaign/progression/index.js";
 
 export type DungeonDepthBand = "shallow" | "middle" | "deep" | "extreme";
 export type OrdinaryRoomKind = "ordinary" | "signature" | "long-corridor";
@@ -54,6 +55,7 @@ export interface OrdinaryRoomRolls {
 export interface OrdinaryRoom {
   readonly roomNumber: number;
   readonly title: string;
+  readonly levelUp: LevelUpTransition | undefined;
   readonly depthBand: DungeonDepthBand;
   readonly difficulty: RolledEncounterDifficulty;
   readonly neighborhood: { readonly id: string; readonly name: string };
@@ -99,6 +101,8 @@ export interface GenerateOrdinaryRoomOptions {
   readonly requestedDifficulty?: RolledEncounterDifficulty;
   readonly requestedFamily?: string;
   readonly requestedFormation?: string;
+  /** A transition settled before this room; it is rendered without affecting generation. */
+  readonly levelUp?: LevelUpTransition;
 }
 
 export type RoomGenerationErrorCode =

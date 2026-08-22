@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
+import {
+  applyCompletedRoomToProgression,
+  createCampaignProgression,
+} from "../../../src/campaign/index.js";
 import type { FamilyCatalog, MonsterDefinition } from "../../../src/content/index.js";
 import { createParty } from "../../../src/encounter/index.js";
 import {
@@ -19,6 +23,29 @@ const FAMILIES: FamilyCatalog = Object.freeze({
 });
 
 describe("renderOrdinaryRoom", () => {
+  it("renders the exact Bash level-up notice between the room header and read-aloud", () => {
+    const { room, rng } = generated([10, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1], undefined, false);
+    const transition = applyCompletedRoomToProgression(createCampaignProgression(), {
+      roomNumber: 1,
+      encounter: { xpSpent: 1_800 },
+    });
+    const withNotice = Object.freeze({ ...room, levelUp: transition.levelUp });
+    const draws = rng.integer.mock.calls.length;
+    const output = renderOrdinaryRoom(withNotice);
+    expect(output).toContain(
+      text(
+        "LEVEL UP",
+        "========",
+        "The party has completed enough encounters to advance to Level 2.",
+        "Have the players level their characters before continuing.",
+        "",
+      ),
+    );
+    expect(output.indexOf(room.title)).toBeLessThan(output.indexOf("LEVEL UP\n"));
+    expect(output.indexOf("LEVEL UP\n")).toBeLessThan(output.indexOf("READ ALOUD\n"));
+    expect(rng.integer).toHaveBeenCalledTimes(draws);
+  });
+
   it("renders the complete supported ordinary-room layout with its shortened encounter", () => {
     const { room, rng } = generated(
       [10, 1, 1, 2, 1, 2, 2, 1, 1, 1, 1, 4, 1, 11, 6, 3],

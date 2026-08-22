@@ -19,6 +19,18 @@ export function renderOrdinaryRoom(room: OrdinaryRoom): string {
     room.title,
     "=========================================",
     "",
+  ];
+
+  if (room.levelUp !== undefined) {
+    lines.push(
+      "LEVEL UP",
+      "========",
+      `The party has completed enough encounters to advance to Level ${room.levelUp.toLevel}.`,
+      "Have the players level their characters before continuing.",
+      "",
+    );
+  }
+  lines.push(
     "READ ALOUD",
     "==========",
     "",
@@ -30,7 +42,7 @@ export function renderOrdinaryRoom(room: OrdinaryRoom): string {
     "",
     `You enter ${room.environment.description}.`,
     "",
-  ];
+  );
 
   if (room.subtheme !== undefined && room.subtheme.description.length > 0) {
     lines.push(room.subtheme.description, "");
