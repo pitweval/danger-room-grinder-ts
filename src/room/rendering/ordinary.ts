@@ -3,6 +3,7 @@ import type { OrdinaryRoom } from "../types.js";
 import type { SuggestedSkillDcs } from "../skills/index.js";
 import { RoomRenderingError } from "./errors.js";
 import { treasureItemMetadata } from "../treasure/index.js";
+import { recurringVisitorLinesForRoom } from "../visitors/index.js";
 
 /** Renders every production-visible ordinary-room field currently represented by the room model. */
 export function renderOrdinaryRoom(room: OrdinaryRoom): string {
@@ -93,6 +94,14 @@ export function renderOrdinaryRoom(room: OrdinaryRoom): string {
     lines.push(`Placement: At the ${clue.placementFeatureName}.`, "");
   }
   if (room.encounter !== undefined) lines.push(...renderRoomEncounter(room.encounter), "");
+  if (room.recurringVisitor.present)
+    lines.push(
+      ...recurringVisitorLinesForRoom(
+        room.recurringVisitor,
+        room.encounter !== undefined,
+        room.hazard !== undefined,
+      ),
+    );
   lines.push(...renderSuggestedSkillDcs(room.suggestedSkillDcs), "");
   lines.push("EXITS", "=====", "");
   for (const exit of room.exits) {

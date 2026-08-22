@@ -12,6 +12,7 @@ import { selectRoomHazard } from "./hazards/index.js";
 import { suggestedSkillDcsForDifficulty } from "./skills/index.js";
 import { generateRoomTreasure } from "./treasure/index.js";
 import { generateGaryClue } from "./clues/index.js";
+import { generateRecurringVisitor } from "./visitors/index.js";
 import type {
   DungeonDepthBand,
   GenerateOrdinaryRoomOptions,
@@ -178,6 +179,17 @@ export function generateOrdinaryRoom(options: GenerateOrdinaryRoomOptions): Ordi
           familySelection.value,
           formationSelection.value,
         );
+  const recurringVisitor = generateRecurringVisitor({
+    catalog: options.visitorCatalog,
+    treasureCatalog: options.treasureCatalog,
+    roomNumber: options.roomNumber,
+    roomKind: kind,
+    hasEncounter: encounter !== undefined,
+    hasHazard: hazard !== undefined,
+    partyLevel: options.party.characterLevel,
+    partySize: options.party.characterCount,
+    ...(options.visitorHistory === undefined ? {} : { history: options.visitorHistory }),
+  });
   const suggestedSkillDcs = suggestedSkillDcsForDifficulty(difficulty);
   const exitCount = options.exitCount ?? 3;
   const exitStartRoll = roll(options, 1, catalog.exits.length);
@@ -232,6 +244,7 @@ export function generateOrdinaryRoom(options: GenerateOrdinaryRoomOptions): Ordi
       formation: formationSelection.value,
     }),
     encounter,
+    recurringVisitor,
     suggestedSkillDcs,
     rolls,
   });

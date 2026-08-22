@@ -21,6 +21,14 @@ export {
   GaryClueGenerationError,
 } from "./clues/index.js";
 export type * from "./clues/index.js";
+export {
+  generateRecurringVisitor,
+  generateSporkInventory,
+  reconstructRecurringVisitorHistory,
+  RecurringVisitorGenerationError,
+  renderRecurringVisitor,
+} from "./visitors/index.js";
+export type * from "./visitors/index.js";
 export type {
   DungeonDepthBand,
   GenerateOrdinaryRoomOptions,

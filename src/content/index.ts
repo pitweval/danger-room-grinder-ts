@@ -51,3 +51,11 @@ export {
   GARY_CLUE_PRESENTATIONS,
 } from "./clues/index.js";
 export type * from "./clues/index.js";
+export {
+  loadRecurringVisitorCatalog,
+  RecurringVisitorCatalogError,
+  SPORK_STOCK_RARITIES,
+  SPORK_STOCK_TYPES,
+  VISITOR_SCENE_CONTEXTS,
+} from "./visitors/index.js";
+export type * from "./visitors/index.js";

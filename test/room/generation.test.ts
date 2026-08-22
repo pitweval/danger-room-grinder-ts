@@ -13,7 +13,7 @@ import {
 } from "../../src/room/index.js";
 import { TEST_BEHAVIOR_CATALOG } from "../encounter/behavior/fixtures.js";
 import { monster, monsterCatalog } from "../encounter/monsters/fixtures.js";
-import { GARY_CLUE_CATALOG, ROOM_CATALOG, TREASURE_CATALOG } from "./fixtures.js";
+import { GARY_CLUE_CATALOG, ROOM_CATALOG, TREASURE_CATALOG, VISITOR_CATALOG } from "./fixtures.js";
 
 const FAMILIES: FamilyCatalog = Object.freeze({
   families: Object.freeze([
@@ -267,6 +267,7 @@ function baseOptions(
     roomSeed: 1010,
     treasureCatalog: TREASURE_CATALOG,
     garyClueCatalog: GARY_CLUE_CATALOG,
+    visitorCatalog: VISITOR_CATALOG,
     includeEncounter,
   } as const;
 }

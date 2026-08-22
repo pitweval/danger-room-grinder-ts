@@ -10,7 +10,7 @@ import {
 } from "../../../src/room/index.js";
 import { TEST_BEHAVIOR_CATALOG } from "../../encounter/behavior/fixtures.js";
 import { monster, monsterCatalog } from "../../encounter/monsters/fixtures.js";
-import { GARY_CLUE_CATALOG, ROOM_CATALOG, TREASURE_CATALOG } from "../fixtures.js";
+import { GARY_CLUE_CATALOG, ROOM_CATALOG, TREASURE_CATALOG, VISITOR_CATALOG } from "../fixtures.js";
 
 const FAMILIES: FamilyCatalog = Object.freeze({
   families: Object.freeze([
@@ -98,6 +98,7 @@ describe("renderOrdinaryRoom", () => {
       "  • 6 × goblin (CR 1/2, 300 XP)",
       "Total: 300 XP",
       "",
+      ...sporkFixtureLines(),
       "SUGGESTED SKILL DCs",
       "===================",
       "",
@@ -192,6 +193,7 @@ describe("renderOrdinaryRoom", () => {
         "Context: Together, the finds resemble practical stores and abandoned belongings.",
         "Trap Salvage: Once made safe, the Falling Net provides weighted netting, trip wire, and release hooks.",
         "",
+        ...sporkFixtureLines(),
         "SUGGESTED SKILL DCs",
         "===================",
         "",
@@ -442,6 +444,7 @@ function generated(
       roomSeed: 1010,
       treasureCatalog: TREASURE_CATALOG,
       garyClueCatalog: GARY_CLUE_CATALOG,
+      visitorCatalog: VISITOR_CATALOG,
       includeEncounter,
       includeHazard,
     }),
@@ -458,7 +461,7 @@ function namedMonster(
 }
 
 function encounterBlock(output: string): string {
-  return `${output.split("ENCOUNTER\n")[1]?.split("SUGGESTED SKILL DCs\n")[0] === undefined ? "" : `ENCOUNTER\n${output.split("ENCOUNTER\n")[1]?.split("SUGGESTED SKILL DCs\n")[0]}`}`;
+  return `${output.split("ENCOUNTER\n")[1]?.split("SPECIAL VISITOR\n")[0] === undefined ? "" : `ENCOUNTER\n${output.split("ENCOUNTER\n")[1]?.split("SPECIAL VISITOR\n")[0]}`}`;
 }
 
 function skillDcBlock(output: string): string {
@@ -473,4 +476,46 @@ function clueBlock(output: string): string {
 
 function text(...lines: readonly string[]): string {
   return `${lines.join("\n")}\n`;
+}
+
+function sporkFixtureLines(): readonly string[] {
+  return [
+    "SPECIAL VISITOR",
+    "===============",
+    "Visitor: Spork",
+    "Scene: The merchant with a warning",
+    "Spork marks the dangerous ground.",
+    "Dialogue: “Do not put your foot there.”",
+    "Outcome: He presents the collection after the hazard is safe.",
+    "Hook: Finders, keepers... mostly.",
+    "",
+    "SPORK'S LOST & FOUND",
+    "====================",
+    "Spork has collected equipment taken from recent prisoners.",
+    "Ask each player what mundane equipment their character began with.",
+    "Spork almost certainly has it somewhere in his collection.",
+    "This may include ordinary weapons, armor, shields, spellcasting focuses, component pouches, adventuring packs, tools, rope, lanterns, and bedrolls.",
+    "It does not include treasure, magic items, or plot-specific equipment.",
+    "Spork will trade for curiosities, junk, odd trinkets, monster parts, shiny rocks, broken utensils, amusing stories, promises, or favors.",
+    "If the party behaves reasonably, the DM may have Spork simply hand their equipment back.",
+    "",
+    "SPORK'S TRAVELING SHOP",
+    "=======================",
+    "Spork buys, sells, barters, and trades.",
+    "The DM determines final prices and barter terms.",
+    "Appraisal: Spork is honest, enthusiastic, and not necessarily expert.",
+    "",
+    "Inventory:",
+    "  • Backpack — mundane",
+    "    Spork's story: It has many pockets.",
+    "  • Rope — mundane",
+    "    Spork's story: Every knot has a story.",
+    "  • Torches — mundane",
+    "    Spork's story: Each prefers a different darkness.",
+    "  • Rations — mundane",
+    "    Spork's story: The portions are optimistic.",
+    "  • Chalk — mundane",
+    "    Spork's story: The shortest stick found an exit.",
+    "",
+  ];
 }

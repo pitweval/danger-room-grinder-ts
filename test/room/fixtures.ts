@@ -1,6 +1,7 @@
 import type {
   GaryClueCatalog,
   OrdinaryRoomCatalog,
+  RecurringVisitorCatalog,
   TreasureCatalog,
 } from "../../src/content/index.js";
 
@@ -186,6 +187,123 @@ export const GARY_CLUE_CATALOG: GaryClueCatalog = deepFreeze({
       presentation: "direct",
     },
   ],
+});
+
+export const VISITOR_CATALOG: RecurringVisitorCatalog = deepFreeze({
+  visitors: [
+    { id: "spork", name: "Spork", period: 20, scheduleIndex: 161, firstEligibleRoom: 7 },
+    {
+      id: "job-goblin",
+      name: "The Job Goblin",
+      period: 20,
+      scheduleIndex: 162,
+      firstEligibleRoom: 2,
+    },
+    {
+      id: "stranger",
+      name: "The Stranger",
+      period: 40,
+      scheduleIndex: 163,
+      firstEligibleRoom: 7,
+    },
+  ],
+  scenes: [
+    {
+      visitorId: "spork",
+      key: "lost-found-encounter",
+      context: "encounter",
+      setup: "The merchant behind cover",
+      description: "Spork safeguards recovered equipment behind cover.",
+      dialogue: "You look like the previous owners.",
+      outcome: "He reveals the recovered equipment.",
+      reward: undefined,
+      hook: "Finders, keepers... mostly.",
+    },
+    {
+      visitorId: "spork",
+      key: "lost-found-hazard",
+      context: "hazard",
+      setup: "The merchant with a warning",
+      description: "Spork marks the dangerous ground.",
+      dialogue: "Do not put your foot there.",
+      outcome: "He presents the collection after the hazard is safe.",
+      reward: undefined,
+      hook: "Finders, keepers... mostly.",
+    },
+    {
+      visitorId: "spork",
+      key: "lost-found-peaceful",
+      context: "peaceful",
+      setup: "Inventory by emotional significance",
+      description: "Spork sorts recovered equipment.",
+      dialogue: "I sorted everything alphabetically.",
+      outcome: "He offers to trade the recovered belongings.",
+      reward: undefined,
+      hook: "Finders, keepers... mostly.",
+    },
+    {
+      visitorId: "spork",
+      key: "rubble-rescue",
+      context: "any",
+      setup: "Buried but cheerful",
+      description: "Only Spork's boots show beneath the rubble.",
+      dialogue: "Lift the blue rock first.",
+      outcome: "Spork hurries toward an exit.",
+      reward: "A stoppered vial of antitoxin.",
+      hook: "The rubble has recent tool marks.",
+    },
+    {
+      visitorId: "job-goblin",
+      key: "sweeping",
+      context: "any",
+      setup: "Routine floor maintenance",
+      description: "A goblin sweeps precise piles.",
+      dialogue: "Mind the third pile.",
+      outcome: "He checks a box and moves on.",
+      reward: undefined,
+      hook: "A nearby inspection is overdue.",
+    },
+    {
+      visitorId: "stranger",
+      key: "shared-apple",
+      context: "any",
+      setup: "A quiet meal",
+      description: "The Stranger cuts an apple into equal slices.",
+      dialogue: "A journey can be measured by what you share.",
+      outcome: "He listens and departs.",
+      reward: undefined,
+      hook: "He glances toward one exit.",
+    },
+  ],
+  sporkStock: [
+    { stockType: "mundane", name: "Rope", rarity: "mundane", story: "Every knot has a story." },
+    {
+      stockType: "mundane",
+      name: "Torches",
+      rarity: "mundane",
+      story: "Each prefers a different darkness.",
+    },
+    {
+      stockType: "mundane",
+      name: "Rations",
+      rarity: "mundane",
+      story: "The portions are optimistic.",
+    },
+    {
+      stockType: "mundane",
+      name: "Chalk",
+      rarity: "mundane",
+      story: "The shortest stick found an exit.",
+    },
+    { stockType: "mundane", name: "Backpack", rarity: "mundane", story: "It has many pockets." },
+    {
+      stockType: "companion",
+      name: "Mechanical Mouse",
+      rarity: "companion",
+      story: "It follows crumbs.",
+    },
+  ],
+  authoredSporkItems: [],
 });
 
 function deepFreeze<T>(value: T): T {

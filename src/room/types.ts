@@ -15,8 +15,13 @@ import type { RandomGenerator } from "../rng/index.js";
 import type { SuggestedSkillDcs } from "./skills/index.js";
 import type { TreasureCatalog } from "../content/treasure/types.js";
 import type { GaryClueCatalog } from "../content/clues/types.js";
+import type { RecurringVisitorCatalog } from "../content/visitors/types.js";
 import type { RoomTreasure, RoomTreasureHistory } from "./treasure/index.js";
 import type { GaryClueGenerationResult, GaryClueHistory } from "./clues/index.js";
+import type {
+  RecurringVisitorGenerationResult,
+  RecurringVisitorHistory,
+} from "./visitors/index.js";
 
 export type DungeonDepthBand = "shallow" | "middle" | "deep" | "extreme";
 export type OrdinaryRoomKind = "ordinary" | "signature" | "long-corridor";
@@ -67,6 +72,7 @@ export interface OrdinaryRoom {
   readonly garyClue: GaryClueGenerationResult;
   readonly encounterPreference: { readonly family: string; readonly formation: string };
   readonly encounter: OrdinaryEncounterResult | undefined;
+  readonly recurringVisitor: RecurringVisitorGenerationResult;
   readonly suggestedSkillDcs: SuggestedSkillDcs;
   readonly rolls: OrdinaryRoomRolls;
 }
@@ -84,6 +90,8 @@ export interface GenerateOrdinaryRoomOptions {
   readonly treasureHistory?: RoomTreasureHistory;
   readonly garyClueCatalog: GaryClueCatalog;
   readonly garyClueHistory?: GaryClueHistory;
+  readonly visitorCatalog: RecurringVisitorCatalog;
+  readonly visitorHistory?: RecurringVisitorHistory;
   readonly neighborhood?: string;
   readonly includeEncounter?: boolean;
   readonly includeHazard?: boolean;
