@@ -6,12 +6,14 @@ import { RandomGenerator } from "../../src/rng/index.js";
 import {
   depthBandFor,
   depthDifficulty,
+  deriveRoomSeed,
   generateOrdinaryRoom,
   RoomGenerationError,
+  semanticTreasureRoll,
 } from "../../src/room/index.js";
 import { TEST_BEHAVIOR_CATALOG } from "../encounter/behavior/fixtures.js";
 import { monster, monsterCatalog } from "../encounter/monsters/fixtures.js";
-import { ROOM_CATALOG, TREASURE_CATALOG } from "./fixtures.js";
+import { GARY_CLUE_CATALOG, ROOM_CATALOG, TREASURE_CATALOG } from "./fixtures.js";
 
 const FAMILIES: FamilyCatalog = Object.freeze({
   families: Object.freeze([
@@ -132,6 +134,29 @@ describe("generateOrdinaryRoom", () => {
     expect(room.environment.name).toBe("Long Corridor");
   });
 
+  it("applies the same clue generator to ordinary, signature, encounter-free, and corridor rooms", () => {
+    const roomSeed = roomSeedForClue(1);
+    const ordinary = generateOrdinaryRoom({
+      ...baseOptions(recordingRng(10, 1, 1, 2, 1, 2, 2, 1, 1, 1, 1, 4, 1, 1), false),
+      roomSeed,
+    });
+    const signature = generateOrdinaryRoom({
+      ...baseOptions(recordingRng(10, 1, 1, 1, 1, 1, 1, 6, 1, 1), false),
+      roomSeed,
+    });
+    const corridor = generateOrdinaryRoom({
+      ...baseOptions(recordingRng(10, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1), false),
+      roomSeed,
+    });
+    expect([ordinary.kind, signature.kind, corridor.kind]).toEqual([
+      "ordinary",
+      "signature",
+      "long-corridor",
+    ]);
+    expect([ordinary, signature, corridor].every((room) => room.garyClue.present)).toBe(true);
+    expect(ordinary.encounter).toBeUndefined();
+  });
+
   it("supports encounter-free rooms and explicit overrides without irrelevant selection draws", () => {
     const rng = recordingRng(1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1);
     const room = generateOrdinaryRoom({
@@ -241,6 +266,7 @@ function baseOptions(
     rng,
     roomSeed: 1010,
     treasureCatalog: TREASURE_CATALOG,
+    garyClueCatalog: GARY_CLUE_CATALOG,
     includeEncounter,
   } as const;
 }
@@ -256,4 +282,12 @@ function recordingRng(...rolls: readonly number[]) {
       return value;
     }),
   };
+}
+
+function roomSeedForClue(roomNumber: number): number {
+  for (let seed = 0; seed < 10_000; seed += 1) {
+    const rewardSeed = deriveRoomSeed(seed, roomNumber + 10_000);
+    if (semanticTreasureRoll(rewardSeed, 39, 100) <= 15) return seed;
+  }
+  throw new Error("No room seed with a Gary clue found.");
 }

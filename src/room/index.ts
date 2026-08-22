@@ -14,6 +14,13 @@ export {
   TreasureGenerationError,
 } from "./treasure/index.js";
 export type * from "./treasure/index.js";
+export {
+  frequencyThreshold,
+  garyCluePhaseFor,
+  generateGaryClue,
+  GaryClueGenerationError,
+} from "./clues/index.js";
+export type * from "./clues/index.js";
 export type {
   DungeonDepthBand,
   GenerateOrdinaryRoomOptions,

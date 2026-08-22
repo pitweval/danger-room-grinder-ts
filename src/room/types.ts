@@ -14,7 +14,9 @@ import type { Party, RolledEncounterDifficulty } from "../encounter/types.js";
 import type { RandomGenerator } from "../rng/index.js";
 import type { SuggestedSkillDcs } from "./skills/index.js";
 import type { TreasureCatalog } from "../content/treasure/types.js";
+import type { GaryClueCatalog } from "../content/clues/types.js";
 import type { RoomTreasure, RoomTreasureHistory } from "./treasure/index.js";
+import type { GaryClueGenerationResult, GaryClueHistory } from "./clues/index.js";
 
 export type DungeonDepthBand = "shallow" | "middle" | "deep" | "extreme";
 export type OrdinaryRoomKind = "ordinary" | "signature" | "long-corridor";
@@ -62,6 +64,7 @@ export interface OrdinaryRoom {
   readonly hasHazard: boolean;
   readonly hazard: RoomHazard | undefined;
   readonly treasure: RoomTreasure;
+  readonly garyClue: GaryClueGenerationResult;
   readonly encounterPreference: { readonly family: string; readonly formation: string };
   readonly encounter: OrdinaryEncounterResult | undefined;
   readonly suggestedSkillDcs: SuggestedSkillDcs;
@@ -79,6 +82,8 @@ export interface GenerateOrdinaryRoomOptions {
   readonly roomSeed: number;
   readonly treasureCatalog: TreasureCatalog;
   readonly treasureHistory?: RoomTreasureHistory;
+  readonly garyClueCatalog: GaryClueCatalog;
+  readonly garyClueHistory?: GaryClueHistory;
   readonly neighborhood?: string;
   readonly includeEncounter?: boolean;
   readonly includeHazard?: boolean;

@@ -10,7 +10,7 @@ import {
 } from "../../../src/room/index.js";
 import { TEST_BEHAVIOR_CATALOG } from "../../encounter/behavior/fixtures.js";
 import { monster, monsterCatalog } from "../../encounter/monsters/fixtures.js";
-import { ROOM_CATALOG, TREASURE_CATALOG } from "../fixtures.js";
+import { GARY_CLUE_CATALOG, ROOM_CATALOG, TREASURE_CATALOG } from "../fixtures.js";
 
 const FAMILIES: FamilyCatalog = Object.freeze({
   families: Object.freeze([
@@ -352,6 +352,62 @@ describe("renderOrdinaryRoom", () => {
     expect(() => renderOrdinaryRoom(corridor)).toThrow(RoomRenderingError);
     expect(() => renderOrdinaryRoom(corridor)).toThrow(/dedicated corridor geometry/);
   });
+
+  it("renders the exact active Gary clue block between treasure and encounter", () => {
+    const { room } = generated([10, 1, 1, 2, 1, 2, 2, 1, 1, 1, 1, 4, 1, 11, 6, 3], undefined, true);
+    const withClue = Object.freeze({
+      ...room,
+      garyClue: Object.freeze({
+        present: true as const,
+        threshold: 15,
+        phase: 1 as const,
+        frequencyRoll: Object.freeze({ index: 39, value: 15, sides: 100 }),
+        selectionRoll: Object.freeze({ index: 138, value: 1, sides: 1 }),
+        clue: Object.freeze({
+          definition: Object.freeze({
+            depthBand: "shallow" as const,
+            neighborhoodId: "*",
+            phase: 1 as const,
+            category: "practical" as const,
+            title: "Safe Footing Card",
+            description: "A signed route card identifies safe stones.",
+            implication: "The marked stones are safe.",
+            presentation: "direct" as const,
+          }),
+          placementFeatureName: "Brazier",
+        }),
+      }),
+    });
+    const output = renderOrdinaryRoom(withClue);
+    expect(clueBlock(output)).toBe(
+      text(
+        "GARY CLUE",
+        "==========",
+        "Safe Footing Card — A signed route card identifies safe stones.",
+        "Category: Practical",
+        "DM Implication: The marked stones are safe.",
+        "Placement: At the Brazier.",
+        "",
+      ),
+    );
+    expect(output.indexOf("TREASURE\n")).toBeLessThan(output.indexOf("GARY CLUE\n"));
+    expect(output.indexOf("GARY CLUE\n")).toBeLessThan(output.indexOf("ENCOUNTER\n"));
+
+    const withoutImplication = Object.freeze({
+      ...withClue,
+      garyClue: Object.freeze({
+        ...withClue.garyClue,
+        clue: Object.freeze({
+          ...withClue.garyClue.clue,
+          definition: Object.freeze({
+            ...withClue.garyClue.clue.definition,
+            implication: undefined,
+          }),
+        }),
+      }),
+    });
+    expect(clueBlock(renderOrdinaryRoom(withoutImplication))).not.toContain("DM Implication:");
+  });
 });
 
 function generated(
@@ -385,6 +441,7 @@ function generated(
       rng,
       roomSeed: 1010,
       treasureCatalog: TREASURE_CATALOG,
+      garyClueCatalog: GARY_CLUE_CATALOG,
       includeEncounter,
       includeHazard,
     }),
@@ -407,6 +464,11 @@ function encounterBlock(output: string): string {
 function skillDcBlock(output: string): string {
   const block = output.split("SUGGESTED SKILL DCs\n")[1]?.split("EXITS\n")[0];
   return block === undefined ? "" : `SUGGESTED SKILL DCs\n${block}`;
+}
+
+function clueBlock(output: string): string {
+  const block = output.split("GARY CLUE\n")[1]?.split("ENCOUNTER\n")[0];
+  return block === undefined ? "" : `GARY CLUE\n${block}`;
 }
 
 function text(...lines: readonly string[]): string {

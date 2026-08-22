@@ -42,3 +42,12 @@ export { OrdinaryRoomCatalogError, loadOrdinaryRoomCatalog } from "./rooms/index
 export type * from "./rooms/index.js";
 export { loadTreasureCatalog, TreasureCatalogError } from "./treasure/index.js";
 export type * from "./treasure/index.js";
+export {
+  GaryClueCatalogError,
+  loadGaryClueCatalog,
+  GARY_CLUE_CATEGORIES,
+  GARY_CLUE_DEPTH_BANDS,
+  GARY_CLUE_PHASES,
+  GARY_CLUE_PRESENTATIONS,
+} from "./clues/index.js";
+export type * from "./clues/index.js";

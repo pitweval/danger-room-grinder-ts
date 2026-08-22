@@ -11,6 +11,7 @@ import { RoomGenerationError } from "./errors.js";
 import { selectRoomHazard } from "./hazards/index.js";
 import { suggestedSkillDcsForDifficulty } from "./skills/index.js";
 import { generateRoomTreasure } from "./treasure/index.js";
+import { generateGaryClue } from "./clues/index.js";
 import type {
   DungeonDepthBand,
   GenerateOrdinaryRoomOptions,
@@ -157,6 +158,15 @@ export function generateOrdinaryRoom(options: GenerateOrdinaryRoomOptions): Ordi
     ...(options.treasureHistory === undefined ? {} : { history: options.treasureHistory }),
   });
 
+  const garyClue = generateGaryClue({
+    catalog: options.garyClueCatalog,
+    roomNumber: options.roomNumber,
+    depthBand,
+    neighborhoodId,
+    treasure,
+    ...(options.garyClueHistory === undefined ? {} : { history: options.garyClueHistory }),
+  });
+
   const encounter =
     options.includeEncounter === false
       ? undefined
@@ -216,6 +226,7 @@ export function generateOrdinaryRoom(options: GenerateOrdinaryRoomOptions): Ordi
     hasHazard: hazard !== undefined,
     hazard,
     treasure,
+    garyClue,
     encounterPreference: Object.freeze({
       family: familySelection.value,
       formation: formationSelection.value,

@@ -1,4 +1,8 @@
-import type { OrdinaryRoomCatalog, TreasureCatalog } from "../../src/content/index.js";
+import type {
+  GaryClueCatalog,
+  OrdinaryRoomCatalog,
+  TreasureCatalog,
+} from "../../src/content/index.js";
 
 export const ROOM_CATALOG: OrdinaryRoomCatalog = deepFreeze({
   neighborhoods: [
@@ -165,6 +169,21 @@ export const TREASURE_CATALOG: TreasureCatalog = deepFreeze({
     {
       hazardName: "Falling Net",
       description: "weighted netting, trip wire, and release hooks",
+    },
+  ],
+});
+
+export const GARY_CLUE_CATALOG: GaryClueCatalog = deepFreeze({
+  clues: [
+    {
+      depthBand: "shallow",
+      neighborhoodId: "*",
+      phase: 1,
+      category: "practical",
+      title: "Safe Footing Card",
+      description: "A signed route card identifies safe stones.",
+      implication: "The marked stones are safe.",
+      presentation: "direct",
     },
   ],
 });

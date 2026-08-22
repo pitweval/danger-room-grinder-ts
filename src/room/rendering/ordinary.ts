@@ -80,6 +80,18 @@ export function renderOrdinaryRoom(room: OrdinaryRoom): string {
   if (room.treasure.salvage !== undefined)
     lines.push(`Trap Salvage: ${room.treasure.salvage.text}`);
   lines.push("");
+  if (room.garyClue.present) {
+    const clue = room.garyClue.clue;
+    lines.push(
+      "GARY CLUE",
+      "==========",
+      `${clue.definition.title} — ${clue.definition.description}`,
+      `Category: ${capitalize(clue.definition.category)}`,
+    );
+    if (clue.definition.implication !== undefined)
+      lines.push(`DM Implication: ${clue.definition.implication}`);
+    lines.push(`Placement: At the ${clue.placementFeatureName}.`, "");
+  }
   if (room.encounter !== undefined) lines.push(...renderRoomEncounter(room.encounter), "");
   lines.push(...renderSuggestedSkillDcs(room.suggestedSkillDcs), "");
   lines.push("EXITS", "=====", "");
