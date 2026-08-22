@@ -71,6 +71,17 @@ describe("generateOrdinaryRoom", () => {
       encounterPreference: { family: "goblinoids", formation: "swarm" },
       hasHazard: true,
       hazard: { name: "Falling Net", severity: "nuisance" },
+      suggestedSkillDcs: {
+        difficulty: "low",
+        checks: [
+          { label: "Easy", dc: 5, asterisk: false },
+          { label: "Moderate", dc: 10, asterisk: false },
+          { label: "Hard", dc: 15, asterisk: false },
+          { label: "Very Hard", dc: 20, asterisk: false },
+          { label: "Nearly Impossible", dc: 25, asterisk: false },
+        ],
+        note: undefined,
+      },
     });
     expect(room.features.map((value) => value.name)).toEqual(["Brazier", "Crates"]);
     expect(room.atmosphere.order).toEqual(["sound", "smell", "lighting"]);
@@ -156,6 +167,8 @@ describe("generateOrdinaryRoom", () => {
     expect(Object.isFrozen(first.features)).toBe(true);
     expect(Object.isFrozen(first.exits)).toBe(true);
     expect(Object.isFrozen(first.hazard)).toBe(true);
+    expect(Object.isFrozen(first.suggestedSkillDcs)).toBe(true);
+    expect(Object.isFrozen(first.suggestedSkillDcs.checks)).toBe(true);
     expect(Object.isFrozen(first.rolls)).toBe(true);
     expect(ROOM_CATALOG).toEqual(snapshot);
   });

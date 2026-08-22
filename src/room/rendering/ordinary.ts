@@ -1,5 +1,6 @@
 import type { OrdinaryEncounterResult } from "../../encounter/generation/types.js";
 import type { OrdinaryRoom } from "../types.js";
+import type { SuggestedSkillDcs } from "../skills/index.js";
 import { RoomRenderingError } from "./errors.js";
 
 /** Renders every production-visible ordinary-room field currently represented by the room model. */
@@ -65,12 +66,25 @@ export function renderOrdinaryRoom(room: OrdinaryRoom): string {
     );
   }
   if (room.encounter !== undefined) lines.push(...renderRoomEncounter(room.encounter), "");
+  lines.push(...renderSuggestedSkillDcs(room.suggestedSkillDcs), "");
   lines.push("EXITS", "=====", "");
   for (const exit of room.exits) {
     lines.push(exit.name, "-".repeat(exit.name.length), exit.description, "");
   }
 
   return `${lines.join("\n")}\n`;
+}
+
+function renderSuggestedSkillDcs(suggested: SuggestedSkillDcs): readonly string[] {
+  const labelWidth = suggested.difficulty === "high" ? 12 : 20;
+  const lines = ["SUGGESTED SKILL DCs", "===================", ""];
+  for (const check of suggested.checks) {
+    const label = `${check.label}:`.padEnd(labelWidth);
+    const dc = check.asterisk ? `${check.dc}*` : String(check.dc).padStart(2);
+    lines.push(`${label} ${dc}`);
+  }
+  if (suggested.note !== undefined) lines.push("", suggested.note);
+  return lines;
 }
 
 function renderRoomEncounter(encounter: OrdinaryEncounterResult): readonly string[] {

@@ -9,6 +9,7 @@ import {
 import { generateOrdinaryEncounter } from "../encounter/generation/index.js";
 import { RoomGenerationError } from "./errors.js";
 import { selectRoomHazard } from "./hazards/index.js";
+import { suggestedSkillDcsForDifficulty } from "./skills/index.js";
 import type {
   DungeonDepthBand,
   GenerateOrdinaryRoomOptions,
@@ -152,6 +153,7 @@ export function generateOrdinaryRoom(options: GenerateOrdinaryRoomOptions): Ordi
           familySelection.value,
           formationSelection.value,
         );
+  const suggestedSkillDcs = suggestedSkillDcsForDifficulty(difficulty);
   const exitCount = options.exitCount ?? 3;
   const exitStartRoll = roll(options, 1, catalog.exits.length);
   const exits = Object.freeze(
@@ -203,6 +205,7 @@ export function generateOrdinaryRoom(options: GenerateOrdinaryRoomOptions): Ordi
       formation: formationSelection.value,
     }),
     encounter,
+    suggestedSkillDcs,
     rolls,
   });
 }

@@ -12,6 +12,7 @@ import type { MonsterCatalog } from "../content/monsters/types.js";
 import type { OrdinaryEncounterResult } from "../encounter/generation/types.js";
 import type { Party, RolledEncounterDifficulty } from "../encounter/types.js";
 import type { RandomGenerator } from "../rng/index.js";
+import type { SuggestedSkillDcs } from "./skills/index.js";
 
 export type DungeonDepthBand = "shallow" | "middle" | "deep" | "extreme";
 export type OrdinaryRoomKind = "ordinary" | "signature" | "long-corridor";
@@ -60,6 +61,7 @@ export interface OrdinaryRoom {
   readonly hazard: RoomHazard | undefined;
   readonly encounterPreference: { readonly family: string; readonly formation: string };
   readonly encounter: OrdinaryEncounterResult | undefined;
+  readonly suggestedSkillDcs: SuggestedSkillDcs;
   readonly rolls: OrdinaryRoomRolls;
 }
 

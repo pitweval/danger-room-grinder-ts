@@ -6,6 +6,7 @@ import {
   generateOrdinaryRoom,
   renderOrdinaryRoom,
   RoomRenderingError,
+  suggestedSkillDcsForDifficulty,
 } from "../../../src/room/index.js";
 import { TEST_BEHAVIOR_CATALOG } from "../../encounter/behavior/fixtures.js";
 import { monster, monsterCatalog } from "../../encounter/monsters/fixtures.js";
@@ -86,6 +87,15 @@ describe("renderOrdinaryRoom", () => {
       "  • 6 × goblin (CR 1/2, 300 XP)",
       "Total: 300 XP",
       "",
+      "SUGGESTED SKILL DCs",
+      "===================",
+      "",
+      "Easy:                 5",
+      "Moderate:            10",
+      "Hard:                15",
+      "Very Hard:           20",
+      "Nearly Impossible:   25",
+      "",
       "EXITS",
       "=====",
       "",
@@ -160,6 +170,15 @@ describe("renderOrdinaryRoom", () => {
         "Effect: The net restrains creatures beneath it.",
         "Counterplay: Spot the wire or cut the net.",
         "",
+        "SUGGESTED SKILL DCs",
+        "===================",
+        "",
+        "Easy:                 5",
+        "Moderate:            10",
+        "Hard:                15",
+        "Very Hard:           20",
+        "Nearly Impossible:   25",
+        "",
         "EXITS",
         "=====",
         "",
@@ -210,6 +229,49 @@ describe("renderOrdinaryRoom", () => {
     );
     expect(room.hazard).toBeUndefined();
     expect(renderOrdinaryRoom(room)).not.toContain("OPTIONAL HAZARD");
+  });
+
+  it("renders the exact moderate and high blocks for encounter-free signature state", () => {
+    const { room } = generated([10, 1, 1, 1, 1, 1, 1, 6, 1, 1], undefined, false);
+    const moderate = Object.freeze({
+      ...room,
+      difficulty: "moderate" as const,
+      suggestedSkillDcs: suggestedSkillDcsForDifficulty("moderate"),
+    });
+    expect(skillDcBlock(renderOrdinaryRoom(moderate))).toBe(
+      text(
+        "SUGGESTED SKILL DCs",
+        "===================",
+        "",
+        "Easy:                10",
+        "Moderate:            15",
+        "Hard:                20",
+        "Very Hard:           25",
+        "Nearly Impossible:   30*",
+        "",
+        "* In DRG, a natural 20 always succeeds, even against a DC 30.",
+        "",
+      ),
+    );
+    const high = Object.freeze({
+      ...room,
+      difficulty: "high" as const,
+      suggestedSkillDcs: suggestedSkillDcsForDifficulty("high"),
+    });
+    expect(skillDcBlock(renderOrdinaryRoom(high))).toBe(
+      text(
+        "SUGGESTED SKILL DCs",
+        "===================",
+        "",
+        "Easy:        15",
+        "Moderate:    20",
+        "Hard:        25",
+        "Very Hard:   30*",
+        "",
+        "* In DRG, a natural 20 always succeeds, even against a DC 30.",
+        "",
+      ),
+    );
   });
 
   it("renders single and partial-budget encounters while suppressing zero alertness", () => {
@@ -315,7 +377,12 @@ function namedMonster(
 }
 
 function encounterBlock(output: string): string {
-  return `${output.split("ENCOUNTER\n")[1]?.split("EXITS\n")[0] === undefined ? "" : `ENCOUNTER\n${output.split("ENCOUNTER\n")[1]?.split("EXITS\n")[0]}`}`;
+  return `${output.split("ENCOUNTER\n")[1]?.split("SUGGESTED SKILL DCs\n")[0] === undefined ? "" : `ENCOUNTER\n${output.split("ENCOUNTER\n")[1]?.split("SUGGESTED SKILL DCs\n")[0]}`}`;
+}
+
+function skillDcBlock(output: string): string {
+  const block = output.split("SUGGESTED SKILL DCs\n")[1]?.split("EXITS\n")[0];
+  return block === undefined ? "" : `SUGGESTED SKILL DCs\n${block}`;
 }
 
 function text(...lines: readonly string[]): string {
