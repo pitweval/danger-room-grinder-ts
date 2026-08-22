@@ -62,6 +62,18 @@ export const ROOM_CATALOG: OrdinaryRoomCatalog = deepFreeze({
     { neighborhoodId: "subterranean-dungeon", featureName: "Crates", weight: 1 },
     { neighborhoodId: "subterranean-dungeon", featureName: "Winch", weight: 1 },
   ],
+  hazards: [
+    {
+      name: "Falling Net",
+      severity: "nuisance",
+      trigger: "A trip wire releases a net.",
+      effect: "The net restrains creatures beneath it.",
+      counterplay: "Spot the wire or cut the net.",
+    },
+  ],
+  neighborhoodHazards: [
+    { neighborhoodId: "subterranean-dungeon", hazardName: "Falling Net", weight: 1 },
+  ],
   arrivals: ["The passage narrows.", "Three steps rise."],
   doorways: ["An oak door waits.", "An iron door waits."],
   exits: [

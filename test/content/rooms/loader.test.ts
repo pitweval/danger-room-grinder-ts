@@ -15,6 +15,13 @@ describe("loadOrdinaryRoomCatalog", () => {
       environmentKeys: ["dungeon"],
     });
     expect(catalog.signatures[0]?.features.map((value) => value.name)).toEqual(["Dial", "Arch"]);
+    expect(catalog.hazards[0]).toEqual({
+      name: "Falling Net",
+      severity: "nuisance",
+      trigger: "A wire releases it.",
+      effect: "It restrains creatures.",
+      counterplay: "Cut the net.",
+    });
     expect(Object.isFrozen(catalog)).toBe(true);
     expect(Object.isFrozen(catalog.signatures[0]?.features)).toBe(true);
   });
@@ -48,6 +55,16 @@ describe("loadOrdinaryRoomCatalog", () => {
         ),
       }),
     ).toThrow('weights.tsv:2: Field "weight"');
+    expect(() =>
+      loadOrdinaryRoomCatalog({
+        ...input,
+        hazards: table(
+          "name\tseverity\ttrigger\teffect\tcounterplay",
+          "Falling Net\textreme\tA wire.\tIt falls.\tCut it.",
+          "hazards.tsv",
+        ),
+      }),
+    ).toThrow('hazards.tsv:2: Unknown hazard severity "extreme"');
   });
 
   it("rejects dangling subtheme, environment, and feature references", () => {
@@ -62,6 +79,16 @@ describe("loadOrdinaryRoomCatalog", () => {
         ),
       }),
     ).toThrow(OrdinaryRoomCatalogError);
+    expect(() =>
+      loadOrdinaryRoomCatalog({
+        ...input,
+        neighborhoodHazards: table(
+          "neighborhood_id\thazard_name\tweight",
+          "dungeon\tMissing\t1",
+          "hazard-weights.tsv",
+        ),
+      }),
+    ).toThrow('hazard-weights.tsv:2: Unknown hazard reference "Missing"');
   });
 
   it("rejects duplicate authored identities", () => {
@@ -108,6 +135,16 @@ function validInput() {
       "neighborhood_id\tfeature_name\tweight",
       "dungeon\tBrazier\t1",
       "weights.tsv",
+    ),
+    hazards: table(
+      "name\tseverity\ttrigger\teffect\tcounterplay",
+      "Falling Net\tnuisance\tA wire releases it.\tIt restrains creatures.\tCut the net.",
+      "hazards.tsv",
+    ),
+    neighborhoodHazards: table(
+      "neighborhood_id\thazard_name\tweight",
+      "dungeon\tFalling Net\t1",
+      "hazard-weights.tsv",
     ),
     arrivals: table("text", "The passage narrows.", "arrivals.tsv"),
     doorways: table("text", "A door waits.", "doorways.tsv"),

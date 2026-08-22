@@ -3,6 +3,7 @@ import type {
   RoomEnvironment,
   RoomExit,
   RoomFeature,
+  RoomHazard,
   RoomSubtheme,
 } from "../content/rooms/types.js";
 import type { EncounterBehaviorCatalog } from "../content/behaviors/types.js";
@@ -36,6 +37,7 @@ export interface OrdinaryRoomRolls {
   readonly firstFeature: number | undefined;
   readonly secondFeature: number | undefined;
   readonly atmosphereOrder: number;
+  readonly hazard: number;
   readonly exits: number;
 }
 
@@ -55,6 +57,7 @@ export interface OrdinaryRoom {
   readonly features: readonly RoomFeature[];
   readonly exits: readonly RoomExit[];
   readonly hasHazard: boolean;
+  readonly hazard: RoomHazard | undefined;
   readonly encounterPreference: { readonly family: string; readonly formation: string };
   readonly encounter: OrdinaryEncounterResult | undefined;
   readonly rolls: OrdinaryRoomRolls;

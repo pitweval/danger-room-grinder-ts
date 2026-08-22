@@ -20,7 +20,7 @@ const FAMILIES: FamilyCatalog = Object.freeze({
 describe("renderOrdinaryRoom", () => {
   it("renders the complete supported ordinary-room layout with its shortened encounter", () => {
     const { room, rng } = generated(
-      [10, 1, 1, 2, 1, 2, 2, 1, 1, 1, 1, 4, 3, 11, 6],
+      [10, 1, 1, 2, 1, 2, 2, 1, 1, 1, 1, 4, 1, 11, 6, 3],
       monster("goblin", { xp: 50, roles: ["minion"], families: ["goblinoids"] }),
     );
     const draws = rng.integer.mock.calls.length;
@@ -68,6 +68,13 @@ describe("renderOrdinaryRoom", () => {
       "Dungeon Depth: Shallow (room 1)",
       "Room Difficulty: Low",
       "",
+      "OPTIONAL HAZARD",
+      "===============",
+      "Falling Net (nuisance)",
+      "Trigger: A trip wire releases a net.",
+      "Effect: The net restrains creatures beneath it.",
+      "Counterplay: Spot the wire or cut the net.",
+      "",
       "ENCOUNTER",
       "=========",
       "Monster Group: Goblinoids",
@@ -102,7 +109,7 @@ describe("renderOrdinaryRoom", () => {
   });
 
   it("renders a signature room without subtheme or encounter placeholders", () => {
-    const { room } = generated([10, 1, 1, 1, 1, 1, 1, 6, 1], undefined, false);
+    const { room } = generated([10, 1, 1, 1, 1, 1, 1, 6, 1, 1], undefined, false);
     expect(renderOrdinaryRoom(room)).toBe(
       text(
         "=========================================",
@@ -146,6 +153,13 @@ describe("renderOrdinaryRoom", () => {
         "Dungeon Depth: Shallow (room 1)",
         "Room Difficulty: Low",
         "",
+        "OPTIONAL HAZARD",
+        "===============",
+        "Falling Net (nuisance)",
+        "Trigger: A trip wire releases a net.",
+        "Effect: The net restrains creatures beneath it.",
+        "Counterplay: Spot the wire or cut the net.",
+        "",
         "EXITS",
         "=====",
         "",
@@ -166,7 +180,7 @@ describe("renderOrdinaryRoom", () => {
   });
 
   it("preserves all six stored atmosphere orders", () => {
-    const { room } = generated([10, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1], undefined, false);
+    const { room } = generated([10, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1], undefined, false);
     const orders = [
       ["lighting", "sound", "smell"],
       ["lighting", "smell", "sound"],
@@ -186,6 +200,18 @@ describe("renderOrdinaryRoom", () => {
     }
   });
 
+  it("omits the complete hazard section when hazard presence is disabled", () => {
+    const { room } = generated(
+      [10, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1],
+      undefined,
+      false,
+      ROOM_CATALOG,
+      false,
+    );
+    expect(room.hazard).toBeUndefined();
+    expect(renderOrdinaryRoom(room)).not.toContain("OPTIONAL HAZARD");
+  });
+
   it("renders single and partial-budget encounters while suppressing zero alertness", () => {
     const priest = namedMonster("priest", "Priest", {
       cr: "2",
@@ -193,7 +219,7 @@ describe("renderOrdinaryRoom", () => {
       roles: ["minion"],
       families: ["goblinoids"],
     });
-    const single = generated([10, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1], priest).room;
+    const single = generated([10, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], priest).room;
     const singleBlock = encounterBlock(renderOrdinaryRoom(single));
     expect(singleBlock).toBe(
       text(
@@ -223,7 +249,7 @@ describe("renderOrdinaryRoom", () => {
       families: ["goblinoids"],
     });
     const partial = generated(
-      [10, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [10, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       kobold,
       true,
       frontLineCatalog,
@@ -234,7 +260,7 @@ describe("renderOrdinaryRoom", () => {
   });
 
   it("does not mutate the room and rejects unsupported Long Corridors", () => {
-    const { room } = generated([10, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1], undefined, false);
+    const { room } = generated([10, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1], undefined, false);
     const snapshot = structuredClone(room);
     renderOrdinaryRoom(room);
     expect(room).toEqual(snapshot);
@@ -249,6 +275,7 @@ function generated(
   selectedMonster?: MonsterDefinition,
   includeEncounter = true,
   roomCatalog = ROOM_CATALOG,
+  includeHazard = true,
 ) {
   let index = 0;
   const rng = {
@@ -273,6 +300,7 @@ function generated(
       behaviorCatalog: TEST_BEHAVIOR_CATALOG,
       rng,
       includeEncounter,
+      includeHazard,
     }),
     rng,
   };

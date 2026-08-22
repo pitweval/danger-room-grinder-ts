@@ -54,7 +54,7 @@ describe("ordinary room depth rules", () => {
 
 describe("generateOrdinaryRoom", () => {
   it("builds room context before embedding an environment-aware encounter", () => {
-    const rng = recordingRng(10, 1, 1, 2, 1, 2, 2, 1, 1, 1, 1, 4, 3, 6, 6);
+    const rng = recordingRng(10, 1, 1, 2, 1, 2, 2, 1, 1, 1, 1, 4, 1, 6, 6, 3);
     const room = generateOrdinaryRoom(baseOptions(rng));
 
     expect(room).toMatchObject({
@@ -70,6 +70,7 @@ describe("generateOrdinaryRoom", () => {
       subtheme: { id: "stores" },
       encounterPreference: { family: "goblinoids", formation: "swarm" },
       hasHazard: true,
+      hazard: { name: "Falling Net", severity: "nuisance" },
     });
     expect(room.features.map((value) => value.name)).toEqual(["Brazier", "Crates"]);
     expect(room.atmosphere.order).toEqual(["sound", "smell", "lighting"]);
@@ -97,11 +98,14 @@ describe("generateOrdinaryRoom", () => {
       [1, 4],
       [1, 20],
       [1, 20],
+      [1, 4],
     ]);
   });
 
   it("uses the active one-in-fifty signature branch and its authored features", () => {
-    const room = generateOrdinaryRoom(baseOptions(recordingRng(10, 1, 1, 1, 1, 1, 1, 6, 1), false));
+    const room = generateOrdinaryRoom(
+      baseOptions(recordingRng(10, 1, 1, 1, 1, 1, 1, 6, 1, 1), false),
+    );
     expect(room.kind).toBe("signature");
     expect(room.environment.name).toBe("Impossible Geometry");
     expect(room.subtheme).toBeUndefined();
@@ -111,14 +115,14 @@ describe("generateOrdinaryRoom", () => {
 
   it("classifies the active long-corridor branch without inventing corridor internals", () => {
     const room = generateOrdinaryRoom(
-      baseOptions(recordingRng(10, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1), false),
+      baseOptions(recordingRng(10, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1), false),
     );
     expect(room.kind).toBe("long-corridor");
     expect(room.environment.name).toBe("Long Corridor");
   });
 
   it("supports encounter-free rooms and explicit overrides without irrelevant selection draws", () => {
-    const rng = recordingRng(1, 1, 2, 1, 1, 1, 1, 1, 1, 1);
+    const rng = recordingRng(1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1);
     const room = generateOrdinaryRoom({
       ...baseOptions(rng, false),
       requestedDifficulty: "high",
@@ -130,12 +134,16 @@ describe("generateOrdinaryRoom", () => {
     expect(room.difficulty).toBe("high");
     expect(room.encounter).toBeUndefined();
     expect(room.hasHazard).toBe(false);
+    expect(room.hazard).toBeUndefined();
     expect(room.rolls).toMatchObject({
       difficulty: undefined,
       family: undefined,
       formation: undefined,
+      hazard: 1,
     });
     expect(rng.integer.mock.calls[0]).toEqual([1, 2]);
+    expect(rng.integer.mock.calls.at(-2)).toEqual([1, 4]);
+    expect(rng.integer.mock.calls.at(-1)).toEqual([1, 4]);
   });
 
   it("is reproducible and deeply immutable without mutating catalogs", () => {
@@ -147,6 +155,7 @@ describe("generateOrdinaryRoom", () => {
     expect(Object.isFrozen(first)).toBe(true);
     expect(Object.isFrozen(first.features)).toBe(true);
     expect(Object.isFrozen(first.exits)).toBe(true);
+    expect(Object.isFrozen(first.hazard)).toBe(true);
     expect(Object.isFrozen(first.rolls)).toBe(true);
     expect(ROOM_CATALOG).toEqual(snapshot);
   });

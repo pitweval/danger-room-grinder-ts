@@ -53,6 +53,17 @@ export function renderOrdinaryRoom(room: OrdinaryRoom): string {
     "",
   );
 
+  if (room.hazard !== undefined) {
+    lines.push(
+      "OPTIONAL HAZARD",
+      "===============",
+      `${room.hazard.name} (${room.hazard.severity})`,
+      `Trigger: ${room.hazard.trigger}`,
+      `Effect: ${room.hazard.effect}`,
+      `Counterplay: ${room.hazard.counterplay}`,
+      "",
+    );
+  }
   if (room.encounter !== undefined) lines.push(...renderRoomEncounter(room.encounter), "");
   lines.push("EXITS", "=====", "");
   for (const exit of room.exits) {

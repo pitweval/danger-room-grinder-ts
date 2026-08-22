@@ -1,9 +1,18 @@
 import { getTsvSource } from "../tsv-parser.js";
 import type { ParsedTsv, TsvRow } from "../types.js";
 import { OrdinaryRoomCatalogError } from "./errors.js";
-import type { LoadOrdinaryRoomCatalogInput, OrdinaryRoomCatalog, RoomFrequency } from "./types.js";
+import type {
+  LoadOrdinaryRoomCatalogInput,
+  OrdinaryRoomCatalog,
+  RoomFrequency,
+  RoomHazardSeverity,
+} from "./types.js";
 
 const ROW_SOURCES = new WeakMap<TsvRow, string>();
+const VALUE_SOURCES = new WeakMap<
+  object,
+  { readonly source: string; readonly lineNumber: number }
+>();
 
 /** Loads the authored tables needed by the active non-boss room shell. */
 export function loadOrdinaryRoomCatalog(input: LoadOrdinaryRoomCatalogInput): OrdinaryRoomCatalog {
@@ -56,6 +65,26 @@ export function loadOrdinaryRoomCatalog(input: LoadOrdinaryRoomCatalogInput): Or
     (row) => ({
       neighborhoodId: text(row, "neighborhood_id"),
       featureName: text(row, "feature_name"),
+      weight: positiveInteger(row, "weight"),
+    }),
+  );
+  const hazards = rows(
+    input.hazards,
+    ["name", "severity", "trigger", "effect", "counterplay"],
+    (row) => ({
+      name: text(row, "name"),
+      severity: hazardSeverity(row),
+      trigger: text(row, "trigger"),
+      effect: text(row, "effect"),
+      counterplay: text(row, "counterplay"),
+    }),
+  );
+  const neighborhoodHazards = rows(
+    input.neighborhoodHazards,
+    ["neighborhood_id", "hazard_name", "weight"],
+    (row) => ({
+      neighborhoodId: text(row, "neighborhood_id"),
+      hazardName: text(row, "hazard_name"),
       weight: positiveInteger(row, "weight"),
     }),
   );
@@ -115,6 +144,12 @@ export function loadOrdinaryRoomCatalog(input: LoadOrdinaryRoomCatalogInput): Or
   assertUnique(subthemes, (value) => `${value.neighborhoodId}/${value.id}`, "subtheme");
   assertUnique(environments, (value) => value.name.toLowerCase(), "environment name");
   assertUnique(features, (value) => value.name.toLowerCase(), "feature name");
+  assertUnique(hazards, (value) => value.name.toLowerCase(), "hazard name");
+  assertUnique(
+    neighborhoodHazards,
+    (value) => `${value.neighborhoodId}/${value.hazardName.toLowerCase()}`,
+    "neighborhood hazard",
+  );
   assertUnique(exits, (value) => value.name.toLowerCase(), "exit name");
   assertUnique(signatures, (value) => value.name.toLowerCase(), "signature-room name");
 
@@ -122,16 +157,26 @@ export function loadOrdinaryRoomCatalog(input: LoadOrdinaryRoomCatalogInput): Or
   const subthemeIds = new Set(subthemes.map((value) => `${value.neighborhoodId}\0${value.id}`));
   const environmentNames = new Set(environments.map((value) => value.name));
   const featureNames = new Set(features.map((value) => value.name));
+  const hazardNames = new Set(hazards.map((value) => value.name));
   for (const value of subthemes)
-    requireReference(neighborhoodIds, value.neighborhoodId, "neighborhood");
+    requireReference(neighborhoodIds, value.neighborhoodId, "neighborhood", value);
   for (const value of subthemeEnvironments) {
-    requireReference(subthemeIds, `${value.neighborhoodId}\0${value.subthemeId}`, "subtheme");
+    requireReference(
+      subthemeIds,
+      `${value.neighborhoodId}\0${value.subthemeId}`,
+      "subtheme",
+      value,
+    );
     for (const name of value.environmentNames)
-      requireReference(environmentNames, name, "environment");
+      requireReference(environmentNames, name, "environment", value);
   }
   for (const value of neighborhoodFeatures) {
-    requireReference(neighborhoodIds, value.neighborhoodId, "neighborhood");
-    requireReference(featureNames, value.featureName, "feature");
+    requireReference(neighborhoodIds, value.neighborhoodId, "neighborhood", value);
+    requireReference(featureNames, value.featureName, "feature", value);
+  }
+  for (const value of neighborhoodHazards) {
+    requireReference(neighborhoodIds, value.neighborhoodId, "neighborhood", value);
+    requireReference(hazardNames, value.hazardName, "hazard", value);
   }
 
   return Object.freeze({
@@ -141,6 +186,8 @@ export function loadOrdinaryRoomCatalog(input: LoadOrdinaryRoomCatalogInput): Or
     environments,
     features,
     neighborhoodFeatures,
+    hazards,
+    neighborhoodHazards,
     arrivals,
     doorways,
     exits,
@@ -165,7 +212,14 @@ function rows<T>(
   if (table.rows.length === 0)
     throw new OrdinaryRoomCatalogError("Table must contain at least one record.", source, 1);
   for (const row of table.rows) ROW_SOURCES.set(row, source);
-  return frozen(table.rows.map((row) => Object.freeze(convert(row))));
+  return frozen(
+    table.rows.map((row) => {
+      const value = Object.freeze(convert(row));
+      if (typeof value === "object" && value !== null)
+        VALUE_SOURCES.set(value, { source, lineNumber: row.lineNumber });
+      return value;
+    }),
+  );
 }
 
 function depthRows(table: ParsedTsv) {
@@ -205,12 +259,25 @@ function roomFrequency(row: TsvRow): RoomFrequency {
   return value;
 }
 
-function requireReference(values: ReadonlySet<string>, value: string, kind: string): void {
+function hazardSeverity(row: TsvRow): RoomHazardSeverity {
+  const value = text(row, "severity");
+  if (value !== "nuisance" && value !== "deadly")
+    throw rowError(row, `Unknown hazard severity "${value}".`);
+  return value;
+}
+
+function requireReference(
+  values: ReadonlySet<string>,
+  value: string,
+  kind: string,
+  owner?: object,
+): void {
+  const location = owner === undefined ? undefined : VALUE_SOURCES.get(owner);
   if (!values.has(value))
     throw new OrdinaryRoomCatalogError(
       `Unknown ${kind} reference "${value.replace("\0", "/")}".`,
-      "room catalog",
-      1,
+      location?.source ?? "room catalog",
+      location?.lineNumber ?? 1,
     );
 }
 

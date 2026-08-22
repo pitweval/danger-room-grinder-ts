@@ -8,6 +8,7 @@ import {
 } from "../encounter/composition/index.js";
 import { generateOrdinaryEncounter } from "../encounter/generation/index.js";
 import { RoomGenerationError } from "./errors.js";
+import { selectRoomHazard } from "./hazards/index.js";
 import type {
   DungeonDepthBand,
   GenerateOrdinaryRoomOptions,
@@ -131,6 +132,26 @@ export function generateOrdinaryRoom(options: GenerateOrdinaryRoomOptions): Ordi
     ...atmosphereValues,
     order: atmosphereOrder(atmosphereOrderRoll),
   });
+  // Bash selects a hazard record for every room; presence only controls whether it is retained.
+  const hazardSelection = selectRoomHazard({
+    catalog,
+    neighborhoodId,
+    depthBand,
+    rng: options.rng,
+  });
+  const hazard = options.includeHazard === false ? undefined : hazardSelection.hazard;
+
+  const encounter =
+    options.includeEncounter === false
+      ? undefined
+      : generateRoomEncounter(
+          options,
+          difficulty,
+          difficultyRoll,
+          environment.engineEnvironment,
+          familySelection.value,
+          formationSelection.value,
+        );
   const exitCount = options.exitCount ?? 3;
   const exitStartRoll = roll(options, 1, catalog.exits.length);
   const exits = Object.freeze(
@@ -157,20 +178,9 @@ export function generateOrdinaryRoom(options: GenerateOrdinaryRoomOptions): Ordi
     firstFeature: firstFeatureRoll,
     secondFeature: secondFeatureRoll,
     atmosphereOrder: atmosphereOrderRoll,
+    hazard: hazardSelection.roll,
     exits: exitStartRoll,
   });
-
-  const encounter =
-    options.includeEncounter === false
-      ? undefined
-      : generateRoomEncounter(
-          options,
-          difficulty,
-          difficultyRoll,
-          environment.engineEnvironment,
-          familySelection.value,
-          formationSelection.value,
-        );
   return Object.freeze({
     roomNumber: options.roomNumber,
     title: `Dungeon Room ${options.roomNumber}`,
@@ -186,7 +196,8 @@ export function generateOrdinaryRoom(options: GenerateOrdinaryRoomOptions): Ordi
     atmosphere,
     features,
     exits,
-    hasHazard: options.includeHazard ?? true,
+    hasHazard: hazard !== undefined,
+    hazard,
     encounterPreference: Object.freeze({
       family: familySelection.value,
       formation: formationSelection.value,

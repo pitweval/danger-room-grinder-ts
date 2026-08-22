@@ -32,6 +32,19 @@ export interface WeightedRoomFeature {
   readonly featureName: string;
   readonly weight: number;
 }
+export type RoomHazardSeverity = "nuisance" | "deadly";
+export interface RoomHazard {
+  readonly name: string;
+  readonly severity: RoomHazardSeverity;
+  readonly trigger: string;
+  readonly effect: string;
+  readonly counterplay: string;
+}
+export interface WeightedRoomHazard {
+  readonly neighborhoodId: string;
+  readonly hazardName: string;
+  readonly weight: number;
+}
 export interface RoomExit {
   readonly name: string;
   readonly description: string;
@@ -67,6 +80,8 @@ export interface OrdinaryRoomCatalog {
   readonly environments: readonly RoomEnvironment[];
   readonly features: readonly RoomFeature[];
   readonly neighborhoodFeatures: readonly WeightedRoomFeature[];
+  readonly hazards: readonly RoomHazard[];
+  readonly neighborhoodHazards: readonly WeightedRoomHazard[];
   readonly arrivals: readonly string[];
   readonly doorways: readonly string[];
   readonly exits: readonly RoomExit[];
@@ -82,6 +97,8 @@ export interface LoadOrdinaryRoomCatalogInput {
   readonly environments: ParsedTsv;
   readonly features: ParsedTsv;
   readonly neighborhoodFeatures: ParsedTsv;
+  readonly hazards: ParsedTsv;
+  readonly neighborhoodHazards: ParsedTsv;
   readonly arrivals: ParsedTsv;
   readonly doorways: ParsedTsv;
   readonly exits: ParsedTsv;
