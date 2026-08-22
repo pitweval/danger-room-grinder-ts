@@ -11,7 +11,7 @@ import {
 } from "../../src/room/index.js";
 import { TEST_BEHAVIOR_CATALOG } from "../encounter/behavior/fixtures.js";
 import { monster, monsterCatalog } from "../encounter/monsters/fixtures.js";
-import { ROOM_CATALOG } from "./fixtures.js";
+import { ROOM_CATALOG, TREASURE_CATALOG } from "./fixtures.js";
 
 const FAMILIES: FamilyCatalog = Object.freeze({
   families: Object.freeze([
@@ -239,6 +239,8 @@ function baseOptions(
     familyCatalog: FAMILIES,
     behaviorCatalog: TEST_BEHAVIOR_CATALOG,
     rng,
+    roomSeed: 1010,
+    treasureCatalog: TREASURE_CATALOG,
     includeEncounter,
   } as const;
 }

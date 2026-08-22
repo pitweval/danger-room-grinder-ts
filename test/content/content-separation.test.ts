@@ -10,4 +10,12 @@ describe("TSV module boundaries", () => {
 
     expect(source).not.toContain("node:fs");
   });
+
+  it("keeps treasure generation independent of filesystem and path APIs", async () => {
+    const generatorPath = resolve(import.meta.dirname, "../../src/room/treasure/generation.ts");
+    const source = await readFile(generatorPath, "utf8");
+
+    expect(source).not.toContain("node:fs");
+    expect(source).not.toContain("node:path");
+  });
 });

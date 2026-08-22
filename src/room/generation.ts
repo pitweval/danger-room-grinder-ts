@@ -10,6 +10,7 @@ import { generateOrdinaryEncounter } from "../encounter/generation/index.js";
 import { RoomGenerationError } from "./errors.js";
 import { selectRoomHazard } from "./hazards/index.js";
 import { suggestedSkillDcsForDifficulty } from "./skills/index.js";
+import { generateRoomTreasure } from "./treasure/index.js";
 import type {
   DungeonDepthBand,
   GenerateOrdinaryRoomOptions,
@@ -142,6 +143,20 @@ export function generateOrdinaryRoom(options: GenerateOrdinaryRoomOptions): Ordi
   });
   const hazard = options.includeHazard === false ? undefined : hazardSelection.hazard;
 
+  const treasure = generateRoomTreasure({
+    catalog: options.treasureCatalog,
+    roomSeed: options.roomSeed,
+    roomNumber: options.roomNumber,
+    partyLevel: options.party.characterLevel,
+    depthBand,
+    difficulty,
+    features,
+    neighborhoodTreasureFlavor: neighborhood.treasureFlavor,
+    selectedHazard: hazardSelection.hazard,
+    retainHazard: hazard !== undefined,
+    ...(options.treasureHistory === undefined ? {} : { history: options.treasureHistory }),
+  });
+
   const encounter =
     options.includeEncounter === false
       ? undefined
@@ -200,6 +215,7 @@ export function generateOrdinaryRoom(options: GenerateOrdinaryRoomOptions): Ordi
     exits,
     hasHazard: hazard !== undefined,
     hazard,
+    treasure,
     encounterPreference: Object.freeze({
       family: familySelection.value,
       formation: formationSelection.value,

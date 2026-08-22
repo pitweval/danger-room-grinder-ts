@@ -1,8 +1,13 @@
-import type { OrdinaryRoomCatalog } from "../../src/content/index.js";
+import type { OrdinaryRoomCatalog, TreasureCatalog } from "../../src/content/index.js";
 
 export const ROOM_CATALOG: OrdinaryRoomCatalog = deepFreeze({
   neighborhoods: [
-    { id: "subterranean-dungeon", name: "Subterranean Dungeon", environmentKeys: ["dungeon"] },
+    {
+      id: "subterranean-dungeon",
+      name: "Subterranean Dungeon",
+      environmentKeys: ["dungeon"],
+      treasureFlavor: "practical stores and abandoned belongings",
+    },
   ],
   subthemes: [
     {
@@ -115,6 +120,53 @@ export const ROOM_CATALOG: OrdinaryRoomCatalog = deepFreeze({
     value: "swarm",
     weight: 1,
   })),
+});
+
+export const TREASURE_CATALOG: TreasureCatalog = deepFreeze({
+  items: [
+    {
+      name: "Potion of Healing",
+      category: "potion",
+      rarity: "common",
+      description: "A red restorative draught is sealed in a sturdy travel vial.",
+    },
+    {
+      name: "Scroll of Knock",
+      category: "scroll",
+      rarity: "uncommon",
+      description: "The vellum is folded like a key.",
+    },
+    {
+      name: "Sun Blade",
+      category: "weapon",
+      rarity: "rare",
+      description: "Only a decorated hilt remains.",
+    },
+    {
+      name: "Carved Bone Statuette",
+      category: "art",
+      rarity: "mundane",
+      description: "A palm-sized figure has a hollow base.",
+    },
+    {
+      name: "Prisoner's Seal",
+      category: "quest",
+      rarity: "uncommon",
+      description: "A signet proves that a captive was held here.",
+    },
+    {
+      name: "Tiny Mechanical Crab",
+      category: "curiosity",
+      rarity: "curiosity",
+      description: "A wind-up crab seeks salt water.",
+    },
+  ],
+  hazardSalvage: [
+    {
+      hazardName: "Falling Net",
+      description: "weighted netting, trip wire, and release hooks",
+    },
+  ],
 });
 
 function deepFreeze<T>(value: T): T {

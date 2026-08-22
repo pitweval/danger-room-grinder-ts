@@ -2,6 +2,7 @@ import type { OrdinaryEncounterResult } from "../../encounter/generation/types.j
 import type { OrdinaryRoom } from "../types.js";
 import type { SuggestedSkillDcs } from "../skills/index.js";
 import { RoomRenderingError } from "./errors.js";
+import { treasureItemMetadata } from "../treasure/index.js";
 
 /** Renders every production-visible ordinary-room field currently represented by the room model. */
 export function renderOrdinaryRoom(room: OrdinaryRoom): string {
@@ -65,6 +66,20 @@ export function renderOrdinaryRoom(room: OrdinaryRoom): string {
       "",
     );
   }
+  lines.push(
+    "TREASURE",
+    "========",
+    `Location: ${room.treasure.location}`,
+    `Helpful Item: ${room.treasure.helpful.name} — ${treasureItemMetadata(room.treasure.helpful)}`,
+    `  ${room.treasure.helpful.description}`,
+    `Narrative Item: ${room.treasure.narrative.name} — ${treasureItemMetadata(room.treasure.narrative)}`,
+    `  ${room.treasure.narrative.description}`,
+    `Valuables: ${room.treasure.valuables.description}.`,
+    `Context: ${room.treasure.context}`,
+  );
+  if (room.treasure.salvage !== undefined)
+    lines.push(`Trap Salvage: ${room.treasure.salvage.text}`);
+  lines.push("");
   if (room.encounter !== undefined) lines.push(...renderRoomEncounter(room.encounter), "");
   lines.push(...renderSuggestedSkillDcs(room.suggestedSkillDcs), "");
   lines.push("EXITS", "=====", "");

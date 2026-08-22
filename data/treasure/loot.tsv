@@ -1,0 +1,151 @@
+name	category	rarity	description
+Old Copper Purse	coins	mundane	A stitched purse holds old copper coins from a fallen local dynasty.
+Silver Payroll Box	coins	mundane	A locked cash box contains counted silver shares and a list of unpaid names.
+Mixed Toll Collection	coins	mundane	Copper and silver coins are sorted into small bags marked by gate and date.
+Electrum Temple Offering	coins	uncommon	Odd electrum coins lie beneath prayer slips naming forgotten petitioners.
+Gold Trade Bars	coins	uncommon	Several stamped gold bars bear the seal of a distant merchant house.
+Foreign Coin Roll	coins	mundane	Paper-wrapped coins show a ruler and script unfamiliar in this region.
+Counterfeit Silver	coins	curiosity	A pouch of plated lead coins includes one genuine example used as a model.
+Emergency Pay Chest	coins	uncommon	A compact iron chest contains military pay packets and sealed orders.
+Ceremonial Platinum Piece	coins	rare	A single oversized platinum coin commemorates a royal oath or victory.
+Dragon-Stamped Hoard Coins	coins	uncommon	Smoke-darkened coins share a dragon stamp and faint traces of old heat.
+Cloudy Quartz	gem	mundane	A fist-sized quartz crystal contains a cloud shaped like a tiny storm.
+Blue Quartz	gem	mundane	A polished blue quartz bears a drilled hole for a missing setting.
+Bloodstone	gem	mundane	Dark green stone is speckled with red and wrapped in a healer's note.
+Carnelian	gem	mundane	A warm orange carnelian is carved with a miniature running hound.
+Chalcedony	gem	mundane	A pale chalcedony seal stone carries an unrecognized family crest.
+Moonstone	gem	uncommon	A translucent moonstone catches light in a moving blue-white band.
+Onyx	gem	uncommon	A polished black onyx is cut to fit an empty eye socket in a statue.
+Jasper	gem	mundane	A red jasper tablet is etched with a short route through nearby tunnels.
+Amber	gem	uncommon	A golden amber bead preserves a tiny winged insect with unusual markings.
+Amethyst	gem	uncommon	A deep purple amethyst is mounted in a broken silver clasp.
+Garnet	gem	uncommon	A dark red garnet bears scratches suggesting it was pried from a weapon.
+Pearl	gem	uncommon	An irregular pearl rests in a tiny shell-shaped box.
+Black Pearl	gem	rare	A nearly black pearl reflects points of green light in darkness.
+Emerald	gem	rare	A small emerald is engraved with one half of a paired message.
+Star Sapphire	gem	rare	A blue sapphire shows a sharp six-rayed star beneath direct light.
+Silver Ewer	art	uncommon	A chased silver ewer depicts a procession entering a mountain gate.
+Carved Bone Statuette	art	mundane	A palm-sized figure has removable arms and a hollow base.
+Gold Locket	art	uncommon	The locket holds two miniature portraits whose faces were deliberately scratched away.
+Painted Silk Fan	art	mundane	A folding fan shows landmarks that align into a route when fully opened.
+Bronze War Mask	art	uncommon	A stern bronze mask is fitted with straps and marked by ritual blows.
+Jeweled Drinking Horn	art	rare	A silver-bound horn is set with small garnets and bears a famous toast.
+Embroidered Vestments	art	uncommon	Ceremonial vestments display a suppressed saint or rival religious order.
+Marble Bust	art	uncommon	A small marble bust resembles someone still active in the region.
+Illuminated Prayer Book	art	rare	Gold-leaf pages surround marginal notes written by several generations.
+Engraved Crystal Goblet	art	uncommon	The goblet's pattern projects a crest when strong light passes through it.
+Ivory Game Set	art	rare	The opposing game pieces portray two historical armies and one missing commander.
+Silver Music Box	art	rare	A clockwork box plays an anthem and contains a replaceable pinned cylinder.
+Tapestry Fragment	art	mundane	The surviving panel shows a hidden door in a recognizable fortress.
+Gold Signet Chain	art	uncommon	A heavy chain carries several seals representing offices rather than families.
+Painted Porcelain Urn	art	uncommon	The urn depicts four seasons but its winter scene has been painted over.
+Potion of Healing	potion	common	A red restorative draught is sealed in a sturdy travel vial.
+Potion of Climbing	potion	common	The cloudy liquid shifts upward along the bottle when tilted.
+Potion of Water Breathing	potion	uncommon	A blue-green potion releases tiny bubbles when opened.
+Potion of Animal Friendship	potion	uncommon	The warm brown liquid smells different to each nearby beast.
+Potion of Growth	potion	uncommon	A red bead expands and contracts slowly inside the clear liquid.
+Potion of Resistance	potion	uncommon	The potion's color and moving motes hint at the damage it wards against.
+Potion of Hill Giant Strength	potion	uncommon	A sliver of giant nail floats in a transparent amber draught.
+Potion of Fire Breath	potion	uncommon	Orange liquid smokes faintly around its waxed stopper.
+Potion of Gaseous Form	potion	rare	Mist moves inside the vial even while the glass remains still.
+Potion of Heroism	potion	rare	The bright blue liquid flashes when someone makes a brave declaration.
+Potion of Invisibility	potion	rare	The bottle appears empty except for the distortion around its far edge.
+Potion of Speed	potion	rare	Yellow fluid races in a continuous spiral without being shaken.
+Potion of Flying	potion	very-rare	The liquid floats at the top of its vial beneath the stopper.
+Potion of Vitality	potion	very-rare	Crimson liquid pulses with a rhythm close to a heartbeat.
+Oil of Slipperiness	potion	uncommon	This black unguent refuses to cling to the inside of its container.
+Scroll of Detect Magic	scroll	common	A compact field scroll highlights the signs of nearby magical auras.
+Scroll of Comprehend Languages	scroll	common	Interleaved scripts repeat the same invocation in many tongues.
+Scroll of Protection from Evil and Good	scroll	common	A silver-edged warding diagram surrounds the central text.
+Scroll of Knock	scroll	uncommon	The vellum is folded like a key and marked with a force sigil.
+Scroll of Lesser Restoration	scroll	uncommon	Clean white parchment carries notes from an experienced battlefield healer.
+Scroll of Misty Step	scroll	uncommon	The ink seems displaced slightly from the parchment beneath it.
+Scroll of See Invisibility	scroll	uncommon	Fine mirrored script can be read only from the blank reverse side.
+Scroll of Dispel Magic	scroll	uncommon	Several common magical patterns are shown crossed out in red.
+Scroll of Fly	scroll	rare	Feather-light parchment strains toward any nearby open window.
+Scroll of Revivify	scroll	rare	A diamond-shaped seal protects a short urgent prayer.
+Scroll of Water Breathing	scroll	rare	The writing remains crisp even when the scroll is submerged.
+Scroll of Arcane Eye	scroll	rare	A detailed eye diagram follows the reader around the page.
+Scroll of Dimension Door	scroll	rare	Two door illustrations occupy opposite ends of one continuous line.
+Scroll of Greater Restoration	scroll	very-rare	The illuminated text depicts broken chains, cleared eyes, and restored names.
+Scroll of Teleportation Circle	scroll	very-rare	The scroll records one usable circle sequence and space for another.
+Silvered Dagger	weapon	uncommon	A balanced dagger has a silver-coated blade and an empty nameplate.
+Moon-Touched Sword	weapon	common	The blade gives off pale light when drawn in darkness.
+Ammunition +1	weapon	uncommon	A bundle of finely made ammunition carries identical arcane marks.
+Weapon +1	weapon	uncommon	This well-kept weapon is lighter and keener than its plain appearance suggests.
+Javelin of Lightning	weapon	uncommon	Lightning-shaped grooves run from the javelin's tip to its grip.
+Trident of Fish Command	weapon	uncommon	The bronze trident is decorated with shells and tiny command runes.
+Dagger of Venom	weapon	rare	A dark channel in the blade leads back to a sealed pommel reservoir.
+Dragon Slayer Weapon	weapon	rare	The weapon bears tally marks and scale-shaped inlays from an old hunt.
+Flame Tongue Weapon	weapon	rare	Heatless flame patterns shimmer beneath the weapon's surface.
+Frost Brand Weapon	weapon	very-rare	Rime gathers along the weapon even in a warm room.
+Giant Slayer Weapon	weapon	rare	The weapon's grip is wrapped in a strip cut from an enormous belt.
+Mace of Disruption	weapon	rare	A sunburst head and funerary prayers mark this heavy mace.
+Mace of Smiting	weapon	rare	The mace is unusually dense and rings when brought near worked stone.
+Nine Lives Stealer	weapon	very-rare	Nine cat-shaped marks decorate the blade, with several already darkened.
+Oathbow	weapon	very-rare	The bow's grip contains a narrow space for a written name.
+Sword of Sharpness	weapon	very-rare	The edge cuts a hanging thread without visible movement.
+Sword of Wounding	weapon	rare	Old reddish stains remain along runes cut into the fuller.
+Vicious Weapon	weapon	rare	The weapon feels eager in the hand and bears no maker's mark.
+Dancing Sword	weapon	very-rare	The balanced sword shifts in its scabbard when combat begins nearby.
+Sun Blade	weapon	rare	Only a decorated hilt remains, warm beside its activation rune.
+Mithral Chain Shirt	armor	uncommon	A folded shirt of fine silvery links weighs far less than expected.
+Adamantine Armor	armor	uncommon	Dark reinforcement plates cover the armor's most vulnerable joints.
+Armor +1	armor	rare	The armor is perfectly fitted yet includes hidden adjustment straps.
+Shield +1	armor	uncommon	A plain shield remains unscarred beneath layers of dirt and paint.
+Animated Shield	armor	very-rare	Small winglike hinges and command glyphs ring this polished shield.
+Armor of Resistance	armor	rare	Colored inlays identify the element or force this armor resists.
+Armor of Vulnerability	armor	rare	Protective runes hide a second pattern visible only from inside the armor.
+Arrow-Catching Shield	armor	rare	The shield face is pocked by old missiles while its rim remains pristine.
+Demon Armor	armor	very-rare	Clawed gauntlets and infernal script make this suit immediately unsettling.
+Dragon Scale Mail	armor	very-rare	Overlapping scales share the hue of one particular dragon lineage.
+Elven Chain	armor	rare	Fine links form leaf patterns and fit beneath ordinary clothing.
+Glamoured Studded Leather	armor	rare	The armor's appearance shifts subtly when compared from different angles.
+Plate Armor of Etherealness	armor	legendary	Ghostly reflections move across the polished plates a moment late.
+Shield of Missile Attraction	armor	rare	Old arrowheads cling to the shield despite having no visible fasteners.
+Spellguard Shield	armor	very-rare	Layered eye and labyrinth symbols cover the inside face of this shield.
+Bag of Holding	wondrous	uncommon	A patched shoulder bag is much deeper than its exterior dimensions allow.
+Boots of Elvenkind	wondrous	uncommon	These soft boots make almost no sound even when dropped.
+Boots of Striding and Springing	wondrous	uncommon	Spring-shaped stitching runs around the reinforced soles.
+Bracers of Archery	wondrous	uncommon	These leather bracers depict famous shots in tiny stamped panels.
+Brooch of Shielding	wondrous	uncommon	A silver brooch resembles a cloak clasp surrounded by a force pattern.
+Cloak of Elvenkind	wondrous	uncommon	The cloak's colors settle toward those of whatever lies behind it.
+Cloak of Protection	wondrous	uncommon	A fine travel cloak bears protective stitching inside every seam.
+Decanter of Endless Water	wondrous	uncommon	Three command words are etched around this stoppered blue flask.
+Driftglobe	wondrous	uncommon	A cloudy glass orb floats a finger's width above its padded case.
+Dust of Disappearance	wondrous	uncommon	A small packet holds glittering dust that vanishes against skin.
+Elemental Gem	wondrous	uncommon	Energy flickers deep within a gemstone aligned to one element.
+Eversmoking Bottle	wondrous	uncommon	Smoke leaks around the stopper but disappears before leaving the bottle.
+Eyes of Minute Seeing	wondrous	uncommon	Crystal lenses reveal scratches too fine to see unaided.
+Figurine of Wondrous Power	wondrous	rare	A small animal figurine carries a command word beneath its base.
+Gauntlets of Ogre Power	wondrous	uncommon	Oversized iron gauntlets resize when both are worn.
+Gloves of Thievery	wondrous	uncommon	These thin gray gloves leave no fingerprints on polished metal.
+Goggles of Night	wondrous	uncommon	Smoky lenses remain easy to see through in total darkness.
+Hat of Disguise	wondrous	uncommon	This plain hat contains a mirror and several impossible reflections.
+Immovable Rod	wondrous	uncommon	A heavy iron rod has one button and no visible mounting hardware.
+Lantern of Revealing	wondrous	uncommon	The lantern's clear panes are engraved with open eyes.
+Portable Hole	wondrous	rare	A folded circle of black cloth seems to have no visible surface.
+Robe of Useful Items	wondrous	uncommon	Several embroidered patches depict practical objects ready to be removed.
+Rope of Climbing	wondrous	uncommon	This silk rope twitches toward secure anchor points.
+Sending Stones	wondrous	uncommon	Two matching stones bear names that have been carefully filed away.
+Stone of Good Luck	wondrous	uncommon	A smooth agate charm has been handled by generations of anxious owners.
+Prisoner's Seal	quest	uncommon	A signet proves that a named captive was held here under secret authority.
+Broken Treaty Tablet	quest	rare	Two fitted stone fragments preserve clauses someone tried to erase.
+Dragon Egg Shell Fragment	quest	rare	A warm scale-like shell piece bears fresh tool marks along one edge.
+Cult Ledger	quest	uncommon	Coded payments connect several respectable names to forbidden ceremonies.
+Vault Key Half	quest	uncommon	Half of a complex key includes alignment marks for its missing partner.
+Royal Bloodline Locket	quest	rare	A portrait locket and hair sample could support a dangerous inheritance claim.
+Planar Coordinate Lens	quest	very-rare	A crystal lens reveals one set of coordinates when held to starlight.
+Saint's Finger Bone	quest	rare	A labeled reliquary may hold a genuine relic, a forgery, or both.
+Monster Bounty Token	quest	uncommon	An official token promises payment for proof that a specific creature is dead.
+Encoded War Map	quest	rare	Heat reveals troop marks and a route toward an unguarded stronghold entrance.
+Indecipherable Treasure Map	curiosity	curiosity	The map shows recognizable landmarks but uses symbols from no known legend.
+Tiny Mechanical Crab	curiosity	curiosity	A wind-up brass crab always walks toward the nearest source of salt water.
+Glass Eye with Moving Pupil	curiosity	curiosity	The pupil tracks one empty corner whenever the eye is uncovered.
+Vial of Dragon Blood	curiosity	uncommon	Dark blood warms near dragons and stains glass with branching patterns.
+Coal-Like Gemstone	curiosity	curiosity	The dull lump reveals internal fire only when held by bare skin.
+Key with No Teeth	curiosity	curiosity	The blank key turns smoothly in one unidentified lock-shaped object nearby.
+Preserved Monster Tooth	curiosity	mundane	A drilled tooth bears tally marks and the initials of several hunters.
+Bottle of Whispering Sand	curiosity	curiosity	Shaking the bottle produces a voice speaking a few seconds from the past.
+Unfinished Prophecy Card	curiosity	curiosity	The illuminated card leaves a blank space where the final figure should stand.
+Compass Pointing Underground	curiosity	curiosity	The brass needle angles downward and slowly rotates as the holder moves.

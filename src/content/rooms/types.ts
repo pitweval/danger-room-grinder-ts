@@ -5,6 +5,7 @@ export interface RoomNeighborhood {
   readonly id: string;
   readonly name: string;
   readonly environmentKeys: readonly string[];
+  readonly treasureFlavor: string;
 }
 export interface RoomSubtheme {
   readonly neighborhoodId: string;

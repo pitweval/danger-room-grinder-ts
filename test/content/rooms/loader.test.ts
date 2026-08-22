@@ -13,6 +13,7 @@ describe("loadOrdinaryRoomCatalog", () => {
       id: "dungeon",
       name: "Dungeon",
       environmentKeys: ["dungeon"],
+      treasureFlavor: "guard stores",
     });
     expect(catalog.signatures[0]?.features.map((value) => value.name)).toEqual(["Dial", "Arch"]);
     expect(catalog.hazards[0]).toEqual({
@@ -107,8 +108,8 @@ describe("loadOrdinaryRoomCatalog", () => {
 function validInput() {
   return {
     neighborhoods: table(
-      "id\tname\tenvironment_keys",
-      "dungeon\tDungeon\tdungeon",
+      "id\tname\tenvironment_keys\ttreasure_flavor",
+      "dungeon\tDungeon\tdungeon\tguard stores",
       "neighborhoods.tsv",
     ),
     subthemes: table(

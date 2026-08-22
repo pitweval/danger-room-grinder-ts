@@ -13,6 +13,8 @@ import type { OrdinaryEncounterResult } from "../encounter/generation/types.js";
 import type { Party, RolledEncounterDifficulty } from "../encounter/types.js";
 import type { RandomGenerator } from "../rng/index.js";
 import type { SuggestedSkillDcs } from "./skills/index.js";
+import type { TreasureCatalog } from "../content/treasure/types.js";
+import type { RoomTreasure, RoomTreasureHistory } from "./treasure/index.js";
 
 export type DungeonDepthBand = "shallow" | "middle" | "deep" | "extreme";
 export type OrdinaryRoomKind = "ordinary" | "signature" | "long-corridor";
@@ -59,6 +61,7 @@ export interface OrdinaryRoom {
   readonly exits: readonly RoomExit[];
   readonly hasHazard: boolean;
   readonly hazard: RoomHazard | undefined;
+  readonly treasure: RoomTreasure;
   readonly encounterPreference: { readonly family: string; readonly formation: string };
   readonly encounter: OrdinaryEncounterResult | undefined;
   readonly suggestedSkillDcs: SuggestedSkillDcs;
@@ -73,6 +76,9 @@ export interface GenerateOrdinaryRoomOptions {
   readonly familyCatalog: FamilyCatalog;
   readonly behaviorCatalog: EncounterBehaviorCatalog;
   readonly rng: Pick<RandomGenerator, "integer">;
+  readonly roomSeed: number;
+  readonly treasureCatalog: TreasureCatalog;
+  readonly treasureHistory?: RoomTreasureHistory;
   readonly neighborhood?: string;
   readonly includeEncounter?: boolean;
   readonly includeHazard?: boolean;

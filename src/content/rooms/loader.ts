@@ -16,11 +16,16 @@ const VALUE_SOURCES = new WeakMap<
 
 /** Loads the authored tables needed by the active non-boss room shell. */
 export function loadOrdinaryRoomCatalog(input: LoadOrdinaryRoomCatalogInput): OrdinaryRoomCatalog {
-  const neighborhoods = rows(input.neighborhoods, ["id", "name", "environment_keys"], (row) => ({
-    id: text(row, "id"),
-    name: text(row, "name"),
-    environmentKeys: list(row, "environment_keys"),
-  }));
+  const neighborhoods = rows(
+    input.neighborhoods,
+    ["id", "name", "environment_keys", "treasure_flavor"],
+    (row) => ({
+      id: text(row, "id"),
+      name: text(row, "name"),
+      environmentKeys: list(row, "environment_keys"),
+      treasureFlavor: text(row, "treasure_flavor"),
+    }),
+  );
   const subthemes = rows(
     input.subthemes,
     ["neighborhood_id", "id", "name", "description", "architecture", "lighting", "sound", "smell"],

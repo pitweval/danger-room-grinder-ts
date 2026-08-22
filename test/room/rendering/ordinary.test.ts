@@ -10,7 +10,7 @@ import {
 } from "../../../src/room/index.js";
 import { TEST_BEHAVIOR_CATALOG } from "../../encounter/behavior/fixtures.js";
 import { monster, monsterCatalog } from "../../encounter/monsters/fixtures.js";
-import { ROOM_CATALOG } from "../fixtures.js";
+import { ROOM_CATALOG, TREASURE_CATALOG } from "../fixtures.js";
 
 const FAMILIES: FamilyCatalog = Object.freeze({
   families: Object.freeze([
@@ -75,6 +75,17 @@ describe("renderOrdinaryRoom", () => {
       "Trigger: A trip wire releases a net.",
       "Effect: The net restrains creatures beneath it.",
       "Counterplay: Spot the wire or cut the net.",
+      "",
+      "TREASURE",
+      "========",
+      "Location: Concealed beside the Brazier.",
+      "Helpful Item: Potion of Healing — potion, common",
+      "  A red restorative draught is sealed in a sturdy travel vial.",
+      "Narrative Item: Prisoner's Seal — quest, uncommon",
+      "  A signet proves that a captive was held here.",
+      "Valuables: 13 gp in mixed coin and one small polished gemstone.",
+      "Context: Together, the finds resemble practical stores and abandoned belongings.",
+      "Trap Salvage: Once made safe, the Falling Net provides weighted netting, trip wire, and release hooks.",
       "",
       "ENCOUNTER",
       "=========",
@@ -169,6 +180,17 @@ describe("renderOrdinaryRoom", () => {
         "Trigger: A trip wire releases a net.",
         "Effect: The net restrains creatures beneath it.",
         "Counterplay: Spot the wire or cut the net.",
+        "",
+        "TREASURE",
+        "========",
+        "Location: Concealed beside the Turning Arch.",
+        "Helpful Item: Potion of Healing — potion, common",
+        "  A red restorative draught is sealed in a sturdy travel vial.",
+        "Narrative Item: Prisoner's Seal — quest, uncommon",
+        "  A signet proves that a captive was held here.",
+        "Valuables: 13 gp in mixed coin and one small polished gemstone.",
+        "Context: Together, the finds resemble practical stores and abandoned belongings.",
+        "Trap Salvage: Once made safe, the Falling Net provides weighted netting, trip wire, and release hooks.",
         "",
         "SUGGESTED SKILL DCs",
         "===================",
@@ -361,6 +383,8 @@ function generated(
       familyCatalog: FAMILIES,
       behaviorCatalog: TEST_BEHAVIOR_CATALOG,
       rng,
+      roomSeed: 1010,
+      treasureCatalog: TREASURE_CATALOG,
       includeEncounter,
       includeHazard,
     }),

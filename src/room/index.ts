@@ -6,6 +6,14 @@ export { renderOrdinaryRoom, RoomRenderingError } from "./rendering/index.js";
 export type { RoomRenderingErrorCode } from "./rendering/index.js";
 export { suggestedSkillDcsForDifficulty } from "./skills/index.js";
 export type { SuggestedSkillDc, SuggestedSkillDcLabel, SuggestedSkillDcs } from "./skills/index.js";
+export {
+  deriveRoomSeed,
+  generateRoomTreasure,
+  semanticTreasureRoll,
+  treasureItemMetadata,
+  TreasureGenerationError,
+} from "./treasure/index.js";
+export type * from "./treasure/index.js";
 export type {
   DungeonDepthBand,
   GenerateOrdinaryRoomOptions,

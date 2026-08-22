@@ -40,3 +40,5 @@ export type {
 } from "./behaviors/index.js";
 export { OrdinaryRoomCatalogError, loadOrdinaryRoomCatalog } from "./rooms/index.js";
 export type * from "./rooms/index.js";
+export { loadTreasureCatalog, TreasureCatalogError } from "./treasure/index.js";
+export type * from "./treasure/index.js";
